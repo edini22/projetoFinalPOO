@@ -21,8 +21,13 @@ public class App {
             System.out.println("  2 - Administrar loja");
             System.out.println("  0 - Sair");
             System.out.print("> ");
-
-            escolha = stdi.nextInt();
+            while (true)
+                try {
+                    escolha = Integer.parseInt(stdi.nextLine());
+                    break;
+                } catch (NumberFormatException nfe) {
+                    System.out.print("Tente novamente: ");
+                }
             switch (escolha) {
                 case 1: //UTIIZADOR
                     Cliente cliente = null;
@@ -33,7 +38,13 @@ public class App {
                         System.out.println("  2 - Realizar uma compra");
                         System.out.println("  0 - Sair/Logout");
                         System.out.print("> ");
-                        escolha2 = stdi.nextInt();
+                        while (true)
+                            try {
+                                escolha2 = Integer.parseInt(stdi.nextLine());
+                                break;
+                            } catch (NumberFormatException nfe) {
+                                System.out.print("Tente novamente: ");
+                            }
                         switch (escolha2) {
                             case 1://Realizar o login/Criar conta
                                 System.out.println("Cliente ja tem registo??[S/N]: ");
@@ -55,17 +66,23 @@ public class App {
                                     }
                                 }else if(registado.equals("n")|| registado.equals("N")){
                                     Scanner newclient = new Scanner(System.in);
-                                    Scanner scanint = new Scanner(System.in);
                                     System.out.print("Nome: ");
-                                    String nome = newclient.nextLine();
+                                    String nome = newclient.nextLine();//TODO fazer protecoes para o nome e assim nao ser so numeros!
                                     System.out.print("Morada: ");
                                     String morada = newclient.nextLine();
                                     System.out.print("Telefone: ");
-                                    int telefone = scanint.nextInt();
+                                    int telefone;
+                                    while (true)
+                                        try {
+                                            telefone = Integer.parseInt(newclient.nextLine());
+                                            break;
+                                        } catch (NumberFormatException nfe) {
+                                            System.out.print(RED + "Telefone Invalido\n" + RESET +"Tenta novamente: ");
+                                        }s
                                     System.out.print("Email: ");
                                     String email = newclient.nextLine();
-                                    System.out.print("Data de Nascimento: ");
-                                    String dat = newclient.nextLine();
+                                    System.out.print("Data de Nascimento:[MM/DD/AAAA]");
+                                    String dat = newclient.nextLine();//TODO fazer proteçoes na data
                                     Date dataNascimento = new Date(dat);
                                     Cliente c = new Cliente(nome, morada, telefone, email, dataNascimento, false);
                                     QuimdaEsquina.AdicionaCliente(c);
@@ -137,7 +154,13 @@ public class App {
                     System.out.println("  3 - Lista Produtos");
                     System.out.println("  0 - Sair");
                     System.out.print("> ");
-                    escolha3 = stdi.nextInt();
+                    while (true)
+                        try {
+                            escolha3 = Integer.parseInt(stdi.nextLine());
+                            break;
+                        } catch (NumberFormatException nfe) {
+                            System.out.print("Tente novamente: ");
+                        }
                     switch (escolha3) {
                         case 1:
                             QuimdaEsquina.ListaVendas();
