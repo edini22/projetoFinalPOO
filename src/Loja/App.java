@@ -1,5 +1,9 @@
 package Loja;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.*;
 
 public class App {
@@ -78,11 +82,20 @@ public class App {
                                             break;
                                         } catch (NumberFormatException nfe) {
                                             System.out.print(RED + "Telefone Invalido\n" + RESET +"Tenta novamente: ");
-                                        }s
+                                        }
                                     System.out.print("Email: ");
-                                    String email = newclient.nextLine();
+                                    String email = "";
+                                    while(!email.contains("@")){
+                                        email = newclient.nextLine();
+                                        if(!email.contains("@"))
+                                            System.out.println(RED + "Email INvalido!\n"+ RESET + "TEnte novamente:");
+                                    }
                                     System.out.print("Data de Nascimento:[MM/DD/AAAA]");
-                                    String dat = newclient.nextLine();//TODO fazer proteçoes na data
+                                    String dat;//TODO fazer proteçoes na data
+                                    while(true){
+                                        dat = newclient.nextLine();
+                                        if(isDateValid(dat))break;
+                                    }
                                     Date dataNascimento = new Date(dat);
                                     Cliente c = new Cliente(nome, morada, telefone, email, dataNascimento, false);
                                     QuimdaEsquina.AdicionaCliente(c);
@@ -185,5 +198,18 @@ public class App {
             }
         } while (escolha != 0);
 
+    }
+    public static boolean isDateValid(String strDate) {
+        String dateFormat = "MM/dd/uuuu";
+    
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter
+        .ofPattern(dateFormat)
+        .withResolverStyle(ResolverStyle.STRICT);
+        try {
+            LocalDate data = LocalDate.parse(strDate, dateTimeFormatter);
+            return true;
+        } catch (DateTimeParseException e) {
+           return false;
+        } 
     }
 }
