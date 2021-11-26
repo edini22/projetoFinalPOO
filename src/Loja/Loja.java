@@ -20,6 +20,10 @@ public class Loja {
         produtos = l;
     }
 
+    public void setListaClientes(List<Cliente> c){
+        clientes = c;
+    }
+
     public void AdicionaCliente(Cliente c) {
         clientes.add(c);
     }

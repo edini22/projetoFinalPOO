@@ -1,9 +1,7 @@
 package Loja;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
+import java.time.format.*;
 import java.util.*;
 
 public class App {
@@ -15,9 +13,8 @@ public class App {
         Cliente ric = new Cliente("RicFazers", "Casa", 935632589, "email@ricfazers.pt", LocalDate.parse("22/03/2002",dateTimeFormatter),
         true);
         QuimdaEsquina.AdicionaCliente(ric);
-        QuimdaEsquina.setListaProdutos(f.setLista());
-        // Alimentar a = new Alimentar("a007", "nome", 10, 2, 1000, 100);
-        // QuimdaEsquina.adicionaProduto(a);
+        QuimdaEsquina.setListaProdutos(f.listaProdutos()); 
+        QuimdaEsquina.setListaClientes(f.ListaClientes());
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";

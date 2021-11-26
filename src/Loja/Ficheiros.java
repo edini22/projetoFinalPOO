@@ -1,20 +1,24 @@
 package Loja;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.time.*;
+import java.time.format.*;
 import java.util.*;
 
 public class Ficheiros {
+    String dateFormat = "dd/MM/uuuu";
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat).withResolverStyle(ResolverStyle.STRICT);
     private File produtos ;
+    private File clientes;
     public Ficheiros(){
         produtos = new File("./ficheiros\\Produtos.txt");
+        clientes = new File("./ficheiros\\Clientes.txt");
     }
-    public List<Produto> setLista(){
+    public List<Produto> listaProdutos(){
         List<Produto> p = new ArrayList<>();
     try (FileReader fr = new FileReader(produtos); BufferedReader br = new BufferedReader(fr);) {//TODO verificar se nao existe o ficheiro de objetos!
         String line;
         while ((line = br.readLine()) != null) {
-            line.trim();
             String[] string = line.split(";");
             string[0] = string[0].replaceAll("\\s+", "");
             string[1] = string[1].strip();
@@ -76,8 +80,56 @@ public class Ficheiros {
 
         }
     } catch (IOException e) {
-        System.out.println("Erro ao ler o ficheiro!");
+        System.out.println("Erro ao ler o ficheiro de Produtos!");
     }
     return p;
 }
+public List<Cliente> ListaClientes(){
+    List<Cliente> c = new ArrayList<>();
+    try (FileReader fr = new FileReader(clientes); BufferedReader br = new BufferedReader(fr);) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] string = line.split(";");
+            if(string.length != 6) System.exit(1);
+            string[0] = string[0].strip();
+            string[1] = string[1].strip();
+            int telefone = 0;
+            if(!string[3].contains("@")){
+                System.out.println( "Email Invalido!\n");
+                System.exit(1);
+            }
+            string[3] = string[3].replaceAll("\\s+", "");  
+            try {
+                telefone = Integer.parseInt(string[2]);
+                LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);//TODO bug pois se colocar 5/10/2000 da erro pois o formato tem de se dd/... ou seja 05 e nao 5
+            } catch (DateTimeParseException e) {
+                System.out.print("Data Invalido\n");
+                System.exit(3);
+            } catch (Exception e) {
+                System.out.println("Telefone de um cliente invalido!");
+                System.exit(3);
+            }
+            string[5] = string[5].toLowerCase();
+            string[5] = string[5].replaceAll("\\s+", "");
+            boolean frequente = false;
+            if(string[5].equals("true")){
+                frequente = true;
+            }else if(string[5].equals("false")){
+
+            }
+            else{
+                System.out.println("erro no Cliente ser frequente ou nao, verifique se tem true ou false no ultimo parametro!");
+                System.exit(1);
+            }
+
+            LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);
+            Cliente cl = new Cliente(string[0],string[1], telefone, string[3], data, frequente);
+            c.add(cl);
+        }
+    }catch (IOException e) {
+        System.out.println("Erro ao ler o ficheiro de clientes!");
+    }
+    return c;
+}
+
 }
