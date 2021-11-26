@@ -9,11 +9,15 @@ import java.util.*;
 public class App {
     public static void main(String[] args) {
         Loja QuimdaEsquina = new Loja();
-        Cliente ric = new Cliente("RicFazers", "Casa", 935632589, "email@ricfazers.pt", new Date("10/10/2021"),
+        Ficheiros f = new Ficheiros();
+        String dateFormat = "dd/MM/uuuu";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat).withResolverStyle(ResolverStyle.STRICT);                         
+        Cliente ric = new Cliente("RicFazers", "Casa", 935632589, "email@ricfazers.pt", LocalDate.parse("22/03/2002",dateTimeFormatter),
         true);
         QuimdaEsquina.AdicionaCliente(ric);
-        Alimentar a = new Alimentar("a007", "nome", 10, 2, 1000, 100);
-        QuimdaEsquina.adicionaProduto(a);
+        QuimdaEsquina.setListaProdutos(f.setLista());
+        // Alimentar a = new Alimentar("a007", "nome", 10, 2, 1000, 100);
+        // QuimdaEsquina.adicionaProduto(a);
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";
@@ -88,15 +92,20 @@ public class App {
                                     while(!email.contains("@")){
                                         email = newclient.nextLine();
                                         if(!email.contains("@"))
-                                            System.out.println(RED + "Email INvalido!\n"+ RESET + "TEnte novamente:");
+                                            System.out.println(RED + "Email Invalido!\n"+ RESET + "Tente novamente:");
                                     }
-                                    System.out.print("Data de Nascimento:[MM/DD/AAAA]");
-                                    String dat;//TODO fazer proteçoes na data
+                                    String dat;
+                                    System.out.print("Data de Nascimento[DD/MM/AAAA]: ");
                                     while(true){
                                         dat = newclient.nextLine();
-                                        if(isDateValid(dat))break;
+                                        try {
+                                            LocalDate data = LocalDate.parse(dat, dateTimeFormatter);
+                                            break;
+                                        } catch (DateTimeParseException e) {
+                                            System.out.print(RED + "Data Invalido\n" + RESET +"Tenta novamente: ");
+                                        } 
                                     }
-                                    Date dataNascimento = new Date(dat);
+                                    LocalDate dataNascimento = LocalDate.parse(dat,dateTimeFormatter);
                                     Cliente c = new Cliente(nome, morada, telefone, email, dataNascimento, false);
                                     QuimdaEsquina.AdicionaCliente(c);
                                     cliente = c;
@@ -122,7 +131,7 @@ public class App {
                                         System.out.print("Referência > ");
                                         String referencia = sc2.nextLine();
                                         Produto p = QuimdaEsquina.find(referencia);
-                                        if(p != null && p.getIdentificador().equals(referencia)){
+                                        if(p != null && p.getIdentificador().equals(referencia) && p.getStock() !=0){
                                             Scanner sc3 = new Scanner(System.in);
                                             while(true){
                                                 System.out.print("Quantidade: ");
@@ -198,18 +207,5 @@ public class App {
             }
         } while (escolha != 0);
 
-    }
-    public static boolean isDateValid(String strDate) {
-        String dateFormat = "MM/dd/uuuu";
-    
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter
-        .ofPattern(dateFormat)
-        .withResolverStyle(ResolverStyle.STRICT);
-        try {
-            LocalDate data = LocalDate.parse(strDate, dateTimeFormatter);
-            return true;
-        } catch (DateTimeParseException e) {
-           return false;
-        } 
     }
 }

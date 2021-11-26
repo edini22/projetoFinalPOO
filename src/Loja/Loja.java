@@ -5,13 +5,19 @@ public class Loja {
     private List<Cliente> clientes;
     private List<Venda> vendas;
     private List<Produto> produtos;
+    private List<Promocao> promocoes;
     private Date data; //para as promoçoes
 
     public Loja() {
         clientes = new ArrayList<>();
         vendas = new ArrayList<>();
         produtos = new ArrayList<>();
+        promocoes = new ArrayList<>();
         data = new Date();
+    }
+
+    public void setListaProdutos(List<Produto> l){
+        produtos = l;
     }
 
     public void AdicionaCliente(Cliente c) {

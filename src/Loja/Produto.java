@@ -5,6 +5,7 @@ public abstract class Produto {
     private String nome;
     private double preco;
     private int stock;
+    //private Promocao promocao;
 
     public Produto(String identificador, String nome, double preco, int stock) {
         this.identificador = identificador;
@@ -83,9 +84,18 @@ class Mobiliario extends Produto {
         this.dimensao = dimensao;
     }
 
+    private String getDimensao(){
+        String dim = "[";
+        for(int i : dimensao){
+            dim += i + " ";
+        }
+        dim += "]";
+        return dim;
+    }
+
     @Override
     public String toString(){
-        return "Nome: " + getNome() + " preço: " + getPreco() + " stock: " + getStock() + " calorias: "+ " peso: " + peso + "Dimensoes: " + dimensao;
+        return "Nome: " + getNome() + " preço: " + getPreco() + " stock: " + getStock() + " peso: " + peso + " Dimensoes: " + getDimensao();
     }
     
 }
