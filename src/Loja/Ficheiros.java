@@ -110,10 +110,8 @@ public class Ficheiros {
                 ois.close();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Produto.obj\".");
-                p = null;
             } catch (ClassNotFoundException cnf) {
                 System.out.println("Classe \"Produto\" nao encontrada");
-                p = null;
             }
         }
         return p;
@@ -177,10 +175,8 @@ public class Ficheiros {
                 ois.close();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
-                c = null;
             } catch (ClassNotFoundException cnf) {
                 System.out.println("Classe \"Cliente\" nao encontrada");
-                c = null;
             }
         }
         return c;
@@ -195,16 +191,16 @@ public class Ficheiros {
             ois.close();
         } catch (IOException ioe) {
             System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
-            v = null;
         } catch (ClassNotFoundException cnf) {
             System.out.println("Classe \"Cliente\" nao encontrada");
-            v = null;
         }
         return v;
     }
 
     public ArrayList<Promocao> listaPromocoes(){
-        return null;
+        ArrayList<Promocao> p = new ArrayList<>();
+
+        return p;
     }
 
     public void writeProdutosObj(ArrayList<Produto> lista) { 
