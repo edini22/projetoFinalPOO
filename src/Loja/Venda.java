@@ -1,24 +1,33 @@
 package Loja;
+import java.io.Serializable;
 import java.util.*;
 
-public class Venda {
+public class Venda implements Serializable{
     private Cliente consumidor;
-    private List<Produto> produtos;
-    private Promocao promocao;
+    private List<Item> items;
 
     public Venda(Cliente consumidor) {
         this.consumidor = consumidor;
-        produtos = new ArrayList<>();
+        items = new ArrayList<>();
     }
 
-    public void adicionaProduto(Produto p) {
-        produtos.add(p);
+    public void adicionaItem(Item item) {
+        boolean existe = false;
+        for(int i = 0; i< items.size(); i++){
+            if(items.get(i).getProduto().getIdentificador().equals(item.getProduto().getIdentificador())){
+                existe = true;
+                items.get(i).addQuantidade(item.getQuantidade());
+            }
+        }
+        if(!existe){
+            items.add(item);
+        }
     }
     
     private String listaProdutos(){
         String lista = "";
-        for(Produto produto : produtos){
-            lista += "\t >" + produto.fatura() + "\n";
+        for(Item i : items){
+            lista += "\t >" + i.fatura() + "\n";
         }
         return lista;
     }
@@ -29,8 +38,8 @@ public class Venda {
 
     public double total(){
         double total = 0;
-        for(Produto p: produtos){
-            total += p.getPreco();
+        for(Item i: items){
+            total += i.conta();
         }
         return total;
     }

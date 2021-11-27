@@ -1,25 +1,33 @@
 package Loja;
 
-public abstract class Produto {
+import java.io.Serializable;
+
+public abstract class Produto implements Serializable{
     private String identificador;
     private String nome;
     private double preco;
     private int stock;
-    //private Promocao promocao;
+    private Promocao promocao;
 
     public Produto(String identificador, String nome, double preco, int stock) {
         this.identificador = identificador;
         this.nome = nome;
         this.preco = preco;
         this.stock = stock;
+        this.promocao = null;
     }
 
     public void retiraStock(int n){
         stock -= n;
     }
 
+
     public String toString(){
         return "nome: " + nome + " preço: " + preco + " stock: " + stock;
+    }
+
+    public String getIdentificador(){
+        return identificador;
     }
 
     public String getNome(){
@@ -34,12 +42,12 @@ public abstract class Produto {
         return stock;
     }
 
-    public String fatura(){
-        return identificador + "  " + nome  + " " + preco + "€";
+    public Promocao getPromocao(){
+        return promocao;
     }
 
-    public String getIdentificador(){
-        return identificador;
+    public void setPromocao(Promocao p){
+        this.promocao = p;
     }
 }
 

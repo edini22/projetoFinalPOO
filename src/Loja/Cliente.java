@@ -1,8 +1,9 @@
 package Loja;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-public class Cliente {
+public class Cliente implements Serializable{
     private String nome;
     private String morada;
     private int telefone;
@@ -25,6 +26,6 @@ public class Cliente {
 
     public String toString() {
         return "Nome: " + nome + "\nMorada: " + morada + "\nTelefone: " + telefone + "\nEmail: " + email
-                + "\n Data de nascimento: " + dataNascimento;
+                + "\nData de nascimento: " + dataNascimento;
     }
 }

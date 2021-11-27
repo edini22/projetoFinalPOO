@@ -1,11 +1,12 @@
 package Loja;
+
 import java.util.*;
 
-public class Loja {
-    private List<Cliente> clientes;
-    private List<Venda> vendas;
-    private List<Produto> produtos;
-    private List<Promocao> promocoes;
+public class Loja{
+    private ArrayList<Cliente> clientes;
+    private ArrayList<Venda> vendas;
+    private ArrayList<Produto> produtos;
+    private ArrayList<Promocao> promocoes;
     private Date data; //para as promoçoes
 
     public Loja() {
@@ -16,12 +17,36 @@ public class Loja {
         data = new Date();
     }
 
-    public void setListaProdutos(List<Produto> l){
+    public ArrayList<Cliente> getClientes(){
+        return clientes;
+    }
+
+    public ArrayList<Produto> getProdutos(){
+        return produtos;
+    }
+
+    public ArrayList<Venda> getVendas(){
+        return vendas;
+    }
+
+    public ArrayList<Promocao> getPromocoes(){
+        return promocoes;
+    }
+
+    public void setListaProdutos(ArrayList<Produto> l){
         produtos = l;
     }
 
-    public void setListaClientes(List<Cliente> c){
+    public void setListaClientes(ArrayList<Cliente> c){
         clientes = c;
+    }
+
+    public void setListaVendas(ArrayList<Venda> v){
+        vendas = v;
+    }
+
+    public void setListaPromocoes(ArrayList<Promocao> p){
+        promocoes = p;
     }
 
     public void AdicionaCliente(Cliente c) {
@@ -72,11 +97,12 @@ public class Loja {
     }
 
     public void ListaVendas(){
-        for (Venda venda : vendas) {
-            System.out.println(venda + "Preço Total: " + venda.total() + "€");
-            System.out.println("-------------");
-        }
-
+        if(vendas.size()!=0)
+            for (Venda venda : vendas) {
+                System.out.println(venda + "Preço Total: " + venda.total() + "€");
+                System.out.println("-------------");
+            }
+        else System.out.println("Nao registo de vendas.");
     }
 
     public Produto find(String id){

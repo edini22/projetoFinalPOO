@@ -9,12 +9,16 @@ public class App {
         Loja QuimdaEsquina = new Loja();
         Ficheiros f = new Ficheiros();
         String dateFormat = "dd/MM/uuuu";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat).withResolverStyle(ResolverStyle.STRICT);                         
-        Cliente ric = new Cliente("RicFazers", "Casa", 935632589, "email@ricfazers.pt", LocalDate.parse("22/03/2002",dateTimeFormatter),
-        true);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
+                .withResolverStyle(ResolverStyle.STRICT);
+        Cliente ric = new Cliente("RicFazers", "Casa", 935632589, "email@ricfazers.pt",
+                LocalDate.parse("22/03/2002", dateTimeFormatter),
+                true);
         QuimdaEsquina.AdicionaCliente(ric);
-        QuimdaEsquina.setListaProdutos(f.listaProdutos()); 
-        QuimdaEsquina.setListaClientes(f.ListaClientes());
+        QuimdaEsquina.setListaProdutos(f.listaProdutos());
+        QuimdaEsquina.setListaClientes(f.listaClientes());
+        QuimdaEsquina.setListaVendas(f.listaVendas());
+        QuimdaEsquina.setListaPromocoes(f.listaPromocoes());
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";
@@ -34,7 +38,7 @@ public class App {
                     System.out.print("Tente novamente: ");
                 }
             switch (escolha) {
-                case 1: //UTIIZADOR
+                case 1: // UTIIZADOR
                     Cliente cliente = null;
                     int escolha2;
                     do {
@@ -51,28 +55,29 @@ public class App {
                                 System.out.print("Tente novamente: ");
                             }
                         switch (escolha2) {
-                            case 1://Realizar o login/Criar conta
+                            case 1:// Realizar o login/Criar conta
                                 System.out.println("Cliente ja tem registo??[S/N]: ");
                                 System.out.print(">");
                                 Scanner std = new Scanner(System.in);
                                 String registado = std.nextLine();
                                 registado = registado.trim();
-                                if(registado.equals("s") || registado.equals("S")){
+                                if (registado.equals("s") || registado.equals("S")) {
                                     Scanner sc = new Scanner(System.in);
-                                    while(true){
+                                    while (true) {
                                         System.out.print("Introduza o email: ");
                                         String email = sc.nextLine();
                                         cliente = QuimdaEsquina.efetuarLogin(email);
-                                        if(cliente != null){
+                                        if (cliente != null) {
                                             System.out.println(GREEN + "Login com sucesso!" + RESET);
                                             break;
-                                        }
-                                        else System.out.println(RED + "E-mail incorreto!" + RESET);
+                                        } else
+                                            System.out.println(RED + "E-mail incorreto!" + RESET);
                                     }
-                                }else if(registado.equals("n")|| registado.equals("N")){
+                                } else if (registado.equals("n") || registado.equals("N")) {
                                     Scanner newclient = new Scanner(System.in);
                                     System.out.print("Nome: ");
-                                    String nome = newclient.nextLine();//TODO fazer protecoes para o nome e assim nao ser so numeros!
+                                    String nome = newclient.nextLine();// TODO fazer protecoes para o nome e assim nao
+                                                                       // ser so numeros!
                                     System.out.print("Morada: ");
                                     String morada = newclient.nextLine();
                                     System.out.print("Telefone: ");
@@ -82,125 +87,130 @@ public class App {
                                             telefone = Integer.parseInt(newclient.nextLine());
                                             break;
                                         } catch (NumberFormatException nfe) {
-                                            System.out.print(RED + "Telefone Invalido\n" + RESET +"Tenta novamente: ");
+                                            System.out.print(RED + "Telefone Invalido\n" + RESET + "Tenta novamente: ");
                                         }
                                     System.out.print("Email: ");
                                     String email = "";
-                                    while(!email.contains("@")){
+                                    while (!email.contains("@")) {
                                         email = newclient.nextLine();
-                                        if(!email.contains("@"))
-                                            System.out.println(RED + "Email Invalido!\n"+ RESET + "Tente novamente:");
+                                        if (!email.contains("@"))
+                                            System.out.println(RED + "Email Invalido!\n" + RESET + "Tente novamente:");
                                     }
                                     String dat;
                                     System.out.print("Data de Nascimento[DD/MM/AAAA]: ");
-                                    while(true){
+                                    while (true) {
                                         dat = newclient.nextLine();
                                         try {
                                             LocalDate data = LocalDate.parse(dat, dateTimeFormatter);
                                             break;
                                         } catch (DateTimeParseException e) {
-                                            System.out.print(RED + "Data Invalido\n" + RESET +"Tenta novamente: ");
-                                        } 
+                                            System.out.print(RED + "Data Invalido\n" + RESET + "Tenta novamente: ");
+                                        }
                                     }
-                                    LocalDate dataNascimento = LocalDate.parse(dat,dateTimeFormatter);
+                                    LocalDate dataNascimento = LocalDate.parse(dat, dateTimeFormatter);
                                     Cliente c = new Cliente(nome, morada, telefone, email, dataNascimento, false);
                                     QuimdaEsquina.AdicionaCliente(c);
                                     cliente = c;
-                                }else{
+                                } else {
                                     System.out.println(RED + "A resposta não é válida!" + RESET);
                                 }
                                 break;
-                            case 2: //Realizar uma compra
-                                if(cliente == null){
+                            case 2: // Realizar uma compra
+                                if (cliente == null) {
                                     System.out.println(RED + "Efetue o login antes de realizar uma compra." + RESET);
                                     break;
                                 }
 
-                                if(QuimdaEsquina.stock() == 0)
+                                if (QuimdaEsquina.stock() == 0)
                                     System.out.println(RED + "Não existem produtos com stock na loja!" + RESET);
-                                else{
+                                else {
                                     Scanner sc2 = new Scanner(System.in);
                                     Venda vend = new Venda(cliente);
-                                    System.out.println("Escolha a referência de um produto para adicionar à sua compra");
+                                    System.out
+                                            .println("Escolha a referência de um produto para adicionar à sua compra");
                                     QuimdaEsquina.listarProdutos();
-                                    while(true){
-                                        if(QuimdaEsquina.stock() == 0)break;
+                                    while (true) {
+                                        if (QuimdaEsquina.stock() == 0)
+                                            break;
                                         System.out.print("Referência > ");
                                         String referencia = sc2.nextLine();
                                         Produto p = QuimdaEsquina.find(referencia);
-                                        if(p != null && p.getIdentificador().equals(referencia) && p.getStock() !=0){
+                                        if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
                                             Scanner sc3 = new Scanner(System.in);
-                                            while(true){
+                                            while (true) {
                                                 System.out.print("Quantidade: ");
                                                 int quantidade = sc3.nextInt();
-                                                if(quantidade >0 && quantidade <= p.getStock()){
-                                                    for(int i = 0;i<quantidade;i++) vend.adicionaProduto(p);
-                                                    p.retiraStock(quantidade); 
+                                                if (quantidade > 0 && quantidade <= p.getStock()) {
+                                                    Item i = new Item(p, quantidade);
+                                                    vend.adicionaItem(i);
                                                     break;
-                                                }
-                                                else System.out.println(RED + "Quantidade invalida" + RESET);
+                                                } else
+                                                    System.out.println(RED + "Quantidade invalida" + RESET);
                                             }
-                                            if(QuimdaEsquina.stock() == 0)
-                                                continue;
-                                            else{
+                                            if (QuimdaEsquina.stock() == 0)
+                                                break;
+                                            else {
                                                 System.out.print("Quer adicionar mais produtos? [S/*] > ");
                                                 String s = sc2.nextLine();
-                                                if(s.equals("s") || s.equals("S")){
+                                                if (s.equals("s") || s.equals("S")) {
                                                     continue;
-                                                }else break;
+                                                } else
+                                                    break;
                                             }
-                                        }
-                                        else{
+                                        } else {
                                             System.out.println(RED + "O produto não existe! Tente de novo." + RESET);
-                                            }
+                                        }
                                     }
+                                    System.out.println(vend);
                                     QuimdaEsquina.adicionaVenda(vend);
-                                    System.out.println("O preço a pagar é: " + vend.total() + "€");
+                                    System.out.println("O preço a pagar é: " + vend.total() + " €");
                                 }
                                 break;
                             case 0:
-                            break;
+                                break;
                         }
-                    }while(escolha2 != 0);
-                break;
+                    } while (escolha2 != 0);
+                    break;
 
-                case 2: //ADMIN
-                int escolha3;
-                do{
-                    System.out.println("\nMenu Administrador:");
-                    System.out.println("  1 - Consultar as compras realizadas");
-                    System.out.println("  2 - Lista clientes");
-                    System.out.println("  3 - Lista Produtos");
-                    System.out.println("  0 - Sair");
-                    System.out.print("> ");
-                    while (true)
-                        try {
-                            escolha3 = Integer.parseInt(stdi.nextLine());
-                            break;
-                        } catch (NumberFormatException nfe) {
-                            System.out.print("Tente novamente: ");
+                case 2: // ADMIN
+                    int escolha3;
+                    do {
+                        System.out.println("\nMenu Administrador:");
+                        System.out.println("  1 - Consultar as compras realizadas");
+                        System.out.println("  2 - Lista clientes");
+                        System.out.println("  3 - Lista Produtos");
+                        System.out.println("  0 - Sair");
+                        System.out.print("> ");
+                        while (true)
+                            try {
+                                escolha3 = Integer.parseInt(stdi.nextLine());
+                                break;
+                            } catch (NumberFormatException nfe) {
+                                System.out.print("Tente novamente: ");
+                            }
+                        switch (escolha3) {
+                            case 1:
+                                QuimdaEsquina.ListaVendas();
+                                break;
+                            case 2:
+                                QuimdaEsquina.ListaClientes();
+                                break;
+                            case 3:
+                                QuimdaEsquina.listarProdutos();
+                                break;
+                            case 0:
+                                break;
                         }
-                    switch (escolha3) {
-                        case 1:
-                            QuimdaEsquina.ListaVendas();
-                            break;
 
-                        case 2:
-                            QuimdaEsquina.ListaClientes();
-                            
-                            break;
-                        case 3:
-                            QuimdaEsquina.listarProdutos();
-                            break;
-                        case 0:
-                            break;
-                    }
-
-                }while(escolha3 != 0);
-                break;
+                    } while (escolha3 != 0);
+                    break;
 
                 case 0:
-                System.exit(0);
+                    f.writeClientesObj(QuimdaEsquina.getClientes());
+                    f.writeProdutosObj(QuimdaEsquina.getProdutos());
+                    f.writeVendasObj(QuimdaEsquina.getVendas());
+                    f.writePromocoesObj(QuimdaEsquina.getPromocoes());
+                    System.exit(0);
             }
         } while (escolha != 0);
 

@@ -1,2 +1,5 @@
-Ricardo;Odivelas;963215864;ricfazeres@gmail.com;05/02/1979;true
+Ricardo Fazeres;Odivelas;963215864;ricfazeres@gmail.com;05/02/1979;true
 Dmitry Vorotnikov;CHERNOBYL;2313660;MITVOROT@MAT.UC.PT;28/02/1925;true
+Maria Albertina;Figueira da Foz;916492360;malbertina@hotmail.com;27/04/1999;true
+Ines Silva;Porto;937501538;inesilva@gmail.com;25/11/2007;false
+Marco Ferreira;Vila Real;927581476;marcof23@yahoo.com;19/01/1886;true
