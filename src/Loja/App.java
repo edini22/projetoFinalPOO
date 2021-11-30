@@ -11,10 +11,6 @@ public class App {
         String dateFormat = "dd/MM/uuuu";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
                 .withResolverStyle(ResolverStyle.STRICT);
-        Cliente ric = new Cliente("RicFazers", "Casa", 935632589, "email@ricfazers.pt",
-                LocalDate.parse("22/03/2002", dateTimeFormatter),
-                true);
-        QuimdaEsquina.AdicionaCliente(ric);
         QuimdaEsquina.setListaProdutos(f.listaProdutos());
         QuimdaEsquina.setListaClientes(f.listaClientes());
         QuimdaEsquina.setListaVendas(f.listaVendas());

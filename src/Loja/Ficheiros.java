@@ -10,14 +10,18 @@ public class Ficheiros {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
             .withResolverStyle(ResolverStyle.STRICT);
 
-    private File produtos;
-    private File clientes;
-    private File promocoes;
-    private File produtosObj;
-    private File clientesObj;
-    private File promocoesObj;
-    private File vendasObj;
+    private final File produtos;
+    private final File clientes;
+    private final File promocoes;
+    private final File produtosObj;
+    private final File clientesObj;
+    private final File promocoesObj;
+    private final File vendasObj;
 
+    /**
+     * Construtor
+     * Define a localizacao dos ficheiros a usar na leitura e escrita dos dados
+     */
     public Ficheiros() {
         produtos = new File("./ficheiros\\Produtos.txt");
         clientes = new File("./ficheiros\\Clientes.txt");
@@ -28,15 +32,15 @@ public class Ficheiros {
         vendasObj = new File("./ficheiros\\Vendas.obj");
     }
 
+    /**
+     *
+     * @return Lista de produtos lida a partir dos ficheiros
+     */
     public ArrayList<Produto> listaProdutos() {
         ArrayList<Produto> p = new ArrayList<>();
 
         if (!(produtosObj.exists() && produtosObj.isFile())) {
-            try (FileReader fr = new FileReader(produtos); BufferedReader br = new BufferedReader(fr);) {// TODO
-                                                                                                         // verificar se
-                                                                                                         // nao existe
-                                                                                                         // o// ficheiro
-                                                                                                         // deobjetos!
+            try (FileReader fr = new FileReader(produtos); BufferedReader br = new BufferedReader(fr);) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] string = line.split(";");
@@ -117,6 +121,10 @@ public class Ficheiros {
         return p;
     }
 
+    /**
+     *
+     * @return Lista de clientes lida a partir dos ficheiros
+     */
     public ArrayList<Cliente> listaClientes() {
         ArrayList<Cliente> c = new ArrayList<>();
         if (!(clientesObj.exists() && clientesObj.isFile())) {
@@ -182,6 +190,10 @@ public class Ficheiros {
         return c;
     }
 
+    /**
+     *
+     * @return Lista de vendas lida a partir do ficheiro Vendas.obj
+     */
     public ArrayList<Venda> listaVendas(){
         ArrayList<Venda> v = new ArrayList<>();
         try {
@@ -197,12 +209,20 @@ public class Ficheiros {
         return v;
     }
 
+    /**
+     *
+     * @return Lista de vendas lida a partir do ficheiros
+     */
     public ArrayList<Promocao> listaPromocoes(){
         ArrayList<Promocao> p = new ArrayList<>();
 
         return p;
     }
 
+    /**
+     * Escreve a lista de Produtos no ficheiro de objetos
+     * @param lista Lista que contem o registo dos produtos da loja
+     */
     public void writeProdutosObj(ArrayList<Produto> lista) { 
         if (lista.size() == 0)
             return;
@@ -217,6 +237,10 @@ public class Ficheiros {
         }
     }
 
+    /**
+     * Escreve a lista de Clietes no ficheiro de objetos
+     * @param lista lista de clientes da loja
+     */
     public void writeClientesObj(ArrayList<Cliente> lista) {
         if (lista.size() == 0)
             return;
@@ -230,6 +254,10 @@ public class Ficheiros {
         }
     }
 
+    /**
+     * Escreve a lista de Vendas no ficheiro de objetos
+     * @param lista Lista de Vendas da loja
+     */
     public void writeVendasObj(ArrayList<Venda> lista) {
         if (lista.size() == 0) {
             return;
@@ -243,6 +271,10 @@ public class Ficheiros {
         }
     }
 
+    /**
+     * Escreve a lista de Promocoes no ficheiro de objetos
+     * @param lista Lista de Promocoes da loja
+     */
     public void writePromocoesObj(ArrayList<Promocao> lista) {
         if (lista.size() == 0) {
             return;

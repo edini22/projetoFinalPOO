@@ -11,6 +11,10 @@ public class Venda implements Serializable{
         items = new ArrayList<>();
     }
 
+    /**
+     * 
+     * @param item
+     */
     public void adicionaItem(Item item) {
         boolean existe = false;
         for(int i = 0; i< items.size(); i++){
