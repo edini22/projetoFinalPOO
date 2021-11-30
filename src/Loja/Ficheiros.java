@@ -5,6 +5,10 @@ import java.time.*;
 import java.time.format.*;
 import java.util.*;
 
+/**
+ * Classe que trata da leitura dos ficheiros e faz o parsing desses dados
+ * Opta pela leitura dos ficheiros de objetos quando estes existem, caso contrario são lidos os ficheitos *.txt
+ */
 public class Ficheiros {
     String dateFormat = "dd/MM/uuuu";
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
@@ -20,20 +24,21 @@ public class Ficheiros {
 
     /**
      * Construtor
-     * Define a localizacao dos ficheiros a usar na leitura e escrita dos dados
+     * Define a localizacao dos ficheiros a usar na leitura e/ou escrita dos dados
      */
     public Ficheiros() {
-        produtos = new File("./ficheiros\\Produtos.txt");
-        clientes = new File("./ficheiros\\Clientes.txt");
-        promocoes = new File("./ficheiros\\Promocoes.txt");
-        produtosObj = new File("./ficheiros\\Produtos.obj");
-        clientesObj = new File("./ficheiros\\Clientes.obj");
-        promocoesObj = new File("./ficheiros\\Promocoes.obj");
-        vendasObj = new File("./ficheiros\\Vendas.obj");
+        this.produtos = new File("./ficheiros\\Produtos.txt");
+        this.clientes = new File("./ficheiros\\Clientes.txt");
+        this.promocoes = new File("./ficheiros\\Promocoes.txt");
+        this.produtosObj = new File("./ficheiros\\Produtos.obj");
+        this.clientesObj = new File("./ficheiros\\Clientes.obj");
+        this.promocoesObj = new File("./ficheiros\\Promocoes.obj");
+        this.vendasObj = new File("./ficheiros\\Vendas.obj");
     }
 
     /**
-     *
+     * Método que lê o ficheiro Produtos.obj que contém um ArrayList<Produto>
+     * Caso Produtos.obj não exista, o ficheiro Produtos.txt é lido e é feito o parsing dessa informação 
      * @return Lista de produtos lida a partir dos ficheiros
      */
     public ArrayList<Produto> listaProdutos() {
@@ -122,7 +127,8 @@ public class Ficheiros {
     }
 
     /**
-     *
+     * Método que lê o ficheiro Clientes.obj que contém um ArrayList<Cliente>
+     * Caso Cliente.obj não exista, o ficheiro Clientes.txt é lido e é feito o parsing dessa informação 
      * @return Lista de clientes lida a partir dos ficheiros
      */
     public ArrayList<Cliente> listaClientes() {
@@ -144,10 +150,7 @@ public class Ficheiros {
                     string[3] = string[3].replaceAll("\\s+", "");
                     try {
                         telefone = Integer.parseInt(string[2]);
-                        LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);// TODO bug pois se colocar
-                                                                                       // 5/10/2000 da erro pois o
-                                                                                       // formato tem de se dd/... ou
-                                                                                       // seja 05 e nao 5
+                        LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);
                     } catch (DateTimeParseException e) {
                         System.out.print("Data Invalido\n");
                         System.exit(3);
@@ -176,11 +179,9 @@ public class Ficheiros {
                 System.out.println("Erro ao ler o ficheiro de clientes!");
             }
         } else {
-            try {
-                FileInputStream fis = new FileInputStream(clientesObj);
-                ObjectInputStream ois = new ObjectInputStream(fis);
+            try (FileInputStream fis = new FileInputStream(clientesObj);
+                ObjectInputStream ois = new ObjectInputStream(fis);){
                 c = (ArrayList<Cliente>) ois.readObject();
-                ois.close();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
             } catch (ClassNotFoundException cnf) {
@@ -191,7 +192,8 @@ public class Ficheiros {
     }
 
     /**
-     *
+     * Método que lê o ficheiro Vendas.obj que contém um ArrayList<Venda>
+     * Se este ficheiro não existir significa que a loja ainda não foi inaugorada (não há um registo de vendas)
      * @return Lista de vendas lida a partir do ficheiro Vendas.obj
      */
     public ArrayList<Venda> listaVendas(){
@@ -210,18 +212,87 @@ public class Ficheiros {
     }
 
     /**
-     *
+     * Método que lê o ficheiro Produtos.obj que contém um ArrayList<Produto>
+     * Se este ficheiro não existir significa que a loja ainda não foi inaugorada (não há um registo de promoções)
      * @return Lista de vendas lida a partir do ficheiros
      */
-    public ArrayList<Promocao> listaPromocoes(){
+    public ArrayList<Promocao> listaPromocoes(ArrayList<Produto> produtos,LocalDate dataAtual){
         ArrayList<Promocao> p = new ArrayList<>();
+        if (!(promocoesObj.exists() && promocoesObj.isFile())) {
+            try (FileReader fr = new FileReader(promocoes); BufferedReader br = new BufferedReader(fr);) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] string = line.split(";");
+                    if (string.length != 4)
+                        System.exit(1);
+                    string[0] = string[0].strip();
+                    boolean id = false;
+                    try {
+                        string[2] = string[2].replaceAll("\\s+", "");
+                        string[3] = string[3].replaceAll("\\s+", "");
+                        LocalDate dataInicio = LocalDate.parse(string[2], dateTimeFormatter);
+                        LocalDate dataFim = LocalDate.parse(string[3], dateTimeFormatter);
+                        string[1] = string[1].toLowerCase();
+                        string[1] = string[1].replaceAll("\\s+", "");
+                        if(dataInicio.isBefore(dataAtual) && dataFim.isAfter(dataAtual)) {
+                            if (string[0].equals("%")) {
+                                Promocao pm = new PagaMenos(dataInicio, dataFim);
+                                p.add(pm);
+                                for (Produto produto : produtos) {
+                                    if (string[1].equals(produto.getIdentificador())) {
+                                        produto.setPromocao(pm);
+                                        id = true;
+                                    }
+                                }
+                                if (id == false) {
+                                    System.out.println("Identificador de Produto nas Promocoes incorreto!");
+                                    System.exit(2);
+                                }
 
+                            } else if (string[0].equals("-")) {
+                                Promocao pm = new Paga3Leva4(dataInicio, dataFim);
+                                p.add(pm);
+                                for (Produto produto : produtos) {
+                                    if (string[1].equals(produto.getIdentificador())) {
+                                        produto.setPromocao(pm);
+                                        id = true;
+                                    }
+                                }
+                                if (id == false) {
+                                    System.out.println("Identificador de Produto nas Promocoes incorreto!");
+                                    System.exit(2);
+                                }
+                            } else {
+                                System.out.println(
+                                        "erro no tipo de promocao!");
+                                System.exit(1);
+                            }
+                        }
+
+                    } catch (DateTimeParseException e) {
+                        System.out.print("Data Invalido\n");
+                        System.exit(3);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Erro ao ler o ficheiro de clientes!");
+            }
+        } else {
+            try(FileInputStream fis = new FileInputStream(clientesObj);
+                ObjectInputStream ois = new ObjectInputStream(fis);) {
+                p = (ArrayList<Promocao>) ois.readObject();
+            } catch (IOException ioe) {
+                System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
+            } catch (ClassNotFoundException cnf) {
+                System.out.println("Classe \"Cliente\" nao encontrada");
+            }
+        }
         return p;
     }
 
     /**
      * Escreve a lista de Produtos no ficheiro de objetos
-     * @param lista Lista que contem o registo dos produtos da loja
+     * @param lista Lista de registos dos produtos da loja
      */
     public void writeProdutosObj(ArrayList<Produto> lista) { 
         if (lista.size() == 0)

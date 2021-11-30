@@ -6,6 +6,7 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) {
+        LocalDate dataAtual = LocalDate.now();
         Loja QuimdaEsquina = new Loja();
         Ficheiros f = new Ficheiros();
         String dateFormat = "dd/MM/uuuu";
@@ -14,11 +15,11 @@ public class App {
         QuimdaEsquina.setListaProdutos(f.listaProdutos());
         QuimdaEsquina.setListaClientes(f.listaClientes());
         QuimdaEsquina.setListaVendas(f.listaVendas());
-        QuimdaEsquina.setListaPromocoes(f.listaPromocoes());
+        QuimdaEsquina.setListaPromocoes(f.listaPromocoes(QuimdaEsquina.getProdutos(),dataAtual));
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";
-        int escolha;
+        int escolha ;
         Scanner stdi = new Scanner(System.in);
         do {
             System.out.println("\nMenu:");
@@ -175,6 +176,8 @@ public class App {
                         System.out.println("  1 - Consultar as compras realizadas");
                         System.out.println("  2 - Lista clientes");
                         System.out.println("  3 - Lista Produtos");
+                        System.out.println("  4 - Avançar data");
+                        System.out.println("  5 - data atual");
                         System.out.println("  0 - Sair");
                         System.out.print("> ");
                         while (true)
@@ -193,6 +196,23 @@ public class App {
                                 break;
                             case 3:
                                 QuimdaEsquina.listarProdutos();
+                                break;
+                            case 4:
+                                int dias = 1;
+                                Scanner scan = new Scanner(System.in);
+                                System.out.println("Insira a quantidade de dias que quer avançar: ");
+                                while (true)
+                                    try {
+
+                                        dias = Integer.parseInt(scan.nextLine());
+                                        break;
+                                    } catch (NumberFormatException nfe) {
+                                        System.out.print("Tenta novamente: ");
+                                    }
+                                dataAtual = dataAtual.plusDays(dias);
+                                break;
+                            case 5:
+                                System.out.println(dataAtual);
                                 break;
                             case 0:
                                 break;
