@@ -166,7 +166,7 @@ public class Loja{
     public void ListaVendas(){
         if(vendas.size()!=0)
             for (Venda venda : vendas) {
-                System.out.println(venda + "Preço Total: " + venda.total() + "€");
+                System.out.println(venda + "Preço produtos: " + venda.total() + "\nPreço transporte" + venda.precoTransporte() + "\nPreço total"+ (venda.total()+venda.precoTransporte())+ "€");
                 System.out.println("-------------");
             }
         else System.out.println("Nao registo de vendas.");

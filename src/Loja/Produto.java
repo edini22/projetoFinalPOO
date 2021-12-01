@@ -35,6 +35,20 @@ public abstract class Produto implements Serializable{
         stock -= n;
     }
 
+    public String getTipoProduto(){
+        identificador = identificador.toLowerCase();
+        String[] id = identificador.split("");
+        return id[0];
+    }
+
+    /**
+     * Método que adiciona stock ao produto
+     * @param n quantidade de produtos que se vai adicionar ao stock
+     */
+    public void adicionastock(int n){
+        stock += n;
+    }
+
     /**
      * ToString Method
      * @return Strinf formatada com os aributos do Produto
@@ -57,6 +71,10 @@ public abstract class Produto implements Serializable{
      */
     public String getNome(){
         return nome;
+    }
+
+    public double getPeso(){
+        return 0;
     }
 
     /**
@@ -173,6 +191,10 @@ class Mobiliario extends Produto {
         this.dimensao = new int[3];// TODO Fazer proteçoes acerca do tamanho do array
         this.peso = peso;
         this.dimensao = dimensao;
+    }
+
+    public double getPeso(){
+        return peso;
     }
 
     /**

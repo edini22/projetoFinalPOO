@@ -122,6 +122,7 @@ public class App {
                                     System.out.println(RED + "Não existem produtos com stock na loja!" + RESET);
                                 else {
                                     Scanner sc2 = new Scanner(System.in);
+                                    boolean mobilia = false;
                                     Venda vend = new Venda(cliente);
                                     System.out
                                             .println("Escolha a referência de um produto para adicionar à sua compra");
@@ -133,13 +134,14 @@ public class App {
                                         String referencia = sc2.nextLine();
                                         Produto p = QuimdaEsquina.find(referencia);
                                         if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
+                                            if(p.getTipoProduto().equals("m") ) mobilia = true;
                                             Scanner sc3 = new Scanner(System.in);
                                             while (true) {
                                                 System.out.print("Quantidade: ");
                                                 int quantidade = sc3.nextInt();
                                                 if (quantidade > 0 && quantidade <= p.getStock()) {
                                                     Item i = new Item(p, quantidade);
-                                                    vend.adicionaItem(i);
+                                                    vend.adicionaItem(i, mobilia);
                                                     break;
                                                 } else
                                                     System.out.println(RED + "Quantidade invalida" + RESET);
@@ -160,7 +162,7 @@ public class App {
                                     }
                                     System.out.println(vend);
                                     QuimdaEsquina.adicionaVenda(vend);
-                                    System.out.println("O preço a pagar é: " + vend.total() + " €");
+                                    System.out.println("O preço a pagar é: " + (vend.total() + vend.precoTransporte()) + " €");
                                 }
                                 break;
                             case 0:

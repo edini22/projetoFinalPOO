@@ -8,6 +8,7 @@ import java.util.*;
 public class Venda implements Serializable{
     private Cliente consumidor;
     private List<Item> items;
+    private int transporteMobilia;
 
     /**
      * Construtor
@@ -16,14 +17,18 @@ public class Venda implements Serializable{
     public Venda(Cliente consumidor) {
         this.consumidor = consumidor;
         items = new ArrayList<>();
+        transporteMobilia = 0;
     }
 
     /**
      * Método que adiciona um item à venda
      * @param item conjunto de produtos iguais a adicionar a compra
      */
-    public void adicionaItem(Item item) {
+    public void adicionaItem(Item item,boolean mob) {
         boolean existe = false;
+        if(mob == true) 
+            if(item.getProduto().getPeso()>=15)
+                transporteMobilia ++;
         for(int i = 0; i< items.size(); i++){
             if(items.get(i).getProduto().getIdentificador().equals(item.getProduto().getIdentificador())){
                 existe = true;
@@ -47,6 +52,7 @@ public class Venda implements Serializable{
         return lista;
     }
 
+
     public String toString(){
         return "Cliente: " + consumidor + "\nCesto de Compras:\n" + listaProdutos();
     }
@@ -61,6 +67,17 @@ public class Venda implements Serializable{
             total += i.conta();
         }
         return total;
+    }
+
+    public int precoTransporte(){
+        int preco = 0;
+        if(consumidor.getFrequente() == true)
+            if(total() <=40)
+                preco += 15;
+        else preco += 20;
+        if(transporteMobilia != 0)
+            preco += (transporteMobilia*10);   
+        return preco;
     }
 
 }

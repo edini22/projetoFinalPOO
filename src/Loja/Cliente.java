@@ -40,6 +40,10 @@ public class Cliente implements Serializable{
         return email;
     }
 
+    public boolean getFrequente(){
+        return frequente;
+    }
+
     /**
      * ToString method
      * @return String que contém os dados do cliente
