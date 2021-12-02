@@ -245,7 +245,7 @@ public class Ficheiros {
                         string[1] = string[1].replaceAll("\\s+", "");
                         if (dataInicio.isBefore(dataAtual) && dataFim.isAfter(dataAtual)) {
                             if (string[0].equals("%")) {
-                                Promocao pm = new PagaMenos(dataInicio, dataFim);
+                                Promocao pm = new PagaMenos(dataInicio, dataFim,string[1]);
                                 p.add(pm);
                                 for (Produto produto : produtos) {
                                     if (string[1].equals(produto.getIdentificador())) {
@@ -259,7 +259,7 @@ public class Ficheiros {
                                 }
 
                             } else if (string[0].equals("-")) {
-                                Promocao pm = new Paga3Leva4(dataInicio, dataFim);
+                                Promocao pm = new Paga3Leva4(dataInicio, dataFim,string[1]);
                                 p.add(pm);
                                 for (Produto produto : produtos) {
                                     if (string[1].equals(produto.getIdentificador())) {

@@ -8,14 +8,13 @@ public class App {
     public static void main(String[] args) {
         LocalDate dataAtual = LocalDate.now();
         Loja QuimdaEsquina = new Loja();
-        Ficheiros f = new Ficheiros();
         String dateFormat = "dd/MM/uuuu";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
                 .withResolverStyle(ResolverStyle.STRICT);
-        QuimdaEsquina.setListaProdutos(f.listaProdutos());
-        QuimdaEsquina.setListaClientes(f.listaClientes());
-        QuimdaEsquina.setListaVendas(f.listaVendas());
-        QuimdaEsquina.setListaPromocoes(f.listaPromocoes(QuimdaEsquina.getProdutos(), dataAtual));
+        QuimdaEsquina.setListaProdutos();
+        QuimdaEsquina.setListaClientes();
+        QuimdaEsquina.setListaVendas();
+        QuimdaEsquina.setListaPromocoes( dataAtual);
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";
@@ -106,7 +105,8 @@ public class App {
                                     }
                                     LocalDate dataNascimento = LocalDate.parse(dat, dateTimeFormatter);
                                     Cliente c = new Cliente(nome, morada, telefone, email, dataNascimento, false);
-                                    QuimdaEsquina.AdicionaCliente(c);
+                                    QuimdaEsquina.adicionaCliente(c);
+                                    QuimdaEsquina.writeClientesObj();
                                     cliente = c;
                                 } else {
                                     System.out.println(RED + "A resposta não é válida!" + RESET);
@@ -122,7 +122,6 @@ public class App {
                                     System.out.println(RED + "Não existem produtos com stock na loja!" + RESET);
                                 else {
                                     Scanner sc2 = new Scanner(System.in);
-                                    boolean mobilia = false;
                                     Venda vend = new Venda(cliente);
                                     System.out
                                             .println("Escolha a referência de um produto para adicionar à sua compra");
@@ -134,15 +133,13 @@ public class App {
                                         String referencia = sc2.nextLine();
                                         Produto p = QuimdaEsquina.find(referencia);
                                         if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
-                                            if (p.getTipoProduto().equals("m"))
-                                                mobilia = true;
                                             Scanner sc3 = new Scanner(System.in);
                                             while (true) {
                                                 System.out.print("Quantidade: ");
                                                 int quantidade = sc3.nextInt();
                                                 if (quantidade > 0 && quantidade <= p.getStock()) {
                                                     Item i = new Item(p, quantidade);
-                                                    vend.adicionaItem(i, mobilia);
+                                                    vend.adicionaItem(i);
                                                     break;
                                                 } else
                                                     System.out.println(RED + "Quantidade invalida" + RESET);
@@ -163,6 +160,7 @@ public class App {
                                     }
                                     System.out.println(vend);
                                     QuimdaEsquina.adicionaVenda(vend);
+                                    QuimdaEsquina.writeVendasObj();
                                     System.out.println(
                                             "O preço a pagar é: " + (vend.total() + vend.precoTransporte()) + " €");
                                 }
@@ -193,10 +191,10 @@ public class App {
                             }
                         switch (escolha3) {
                             case 1:
-                                QuimdaEsquina.ListaVendas();
+                                QuimdaEsquina.listaVendas();
                                 break;
                             case 2:
-                                QuimdaEsquina.ListaClientes();
+                                QuimdaEsquina.listaClientes();
                                 break;
                             case 3:
                                 QuimdaEsquina.listarProdutos();
@@ -207,7 +205,6 @@ public class App {
                                 System.out.println("Insira a quantidade de dias que quer avançar: ");
                                 while (true)
                                     try {
-
                                         dias = Integer.parseInt(scan.nextLine());
                                         break;
                                     } catch (NumberFormatException nfe) {
@@ -226,10 +223,6 @@ public class App {
                     break;
 
                 case 0:
-                    f.writeClientesObj(QuimdaEsquina.getClientes());
-                    f.writeProdutosObj(QuimdaEsquina.getProdutos());
-                    f.writeVendasObj(QuimdaEsquina.getVendas());
-                    f.writePromocoesObj(QuimdaEsquina.getPromocoes());
                     System.exit(0);
             }
         } while (escolha != 0);

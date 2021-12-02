@@ -2,7 +2,6 @@ package Loja;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.*;
 
 /**
  * Classe que contém os atributos de um Cliente
@@ -40,7 +39,7 @@ public class Cliente implements Serializable {
      * 
      * @return email
      */
-    public String getmail() {
+    public String getMail() {
         return email;
     }
 

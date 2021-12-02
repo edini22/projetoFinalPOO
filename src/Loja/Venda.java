@@ -27,11 +27,11 @@ public class Venda implements Serializable {
      * 
      * @param item conjunto de produtos iguais a adicionar a compra
      */
-    public void adicionaItem(Item item, boolean mob) {
+    public void adicionaItem(Item item) {
         boolean existe = false;
-        if (mob == true)
+        if (item.getProduto().getPeso() != 0)
             if (item.getProduto().getPeso() >= 15)
-                transporteMobilia++;
+                transporteMobilia += item.getQuantidade();
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getProduto().getIdentificador().equals(item.getProduto().getIdentificador())) {
                 existe = true;

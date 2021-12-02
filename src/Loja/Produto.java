@@ -1,6 +1,6 @@
 package Loja;
 
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * Classe que contém os atributos de um produto

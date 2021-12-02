@@ -9,10 +9,12 @@ import java.time.LocalDate;
 public abstract class Promocao implements Serializable {
     private LocalDate dataInicio;
     private LocalDate dataFim;
+    private String id;
 
-    public Promocao(LocalDate dataInicio, LocalDate dataFim) {
+    public Promocao(LocalDate dataInicio, LocalDate dataFim, String id) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
+        this.id = id;
     }
 
     public LocalDate getDataInicio() {
@@ -21,6 +23,10 @@ public abstract class Promocao implements Serializable {
 
     public LocalDate getDataFim() {
         return dataFim;
+    }
+
+    public String getId(){
+        return id;
     }
 
     /**
@@ -45,15 +51,15 @@ public abstract class Promocao implements Serializable {
         return 0;
     }
 
-    public String Promocao(){
+    public String tipoPromocao(){
         return "";
     }
 }
 
 class PagaMenos extends Promocao {
 
-    public PagaMenos(LocalDate dataInicio, LocalDate dataFim) {
-        super(dataInicio, dataFim);
+    public PagaMenos(LocalDate dataInicio, LocalDate dataFim,String id) {
+        super(dataInicio, dataFim,id);
     }
 
     @Override
@@ -69,7 +75,7 @@ class PagaMenos extends Promocao {
     }
 
     @Override
-    public String Promocao(){
+    public String tipoPromocao(){
         return "Page Menos!";
     }
 
@@ -77,8 +83,8 @@ class PagaMenos extends Promocao {
 
 class Paga3Leva4 extends Promocao {
 
-    public Paga3Leva4(LocalDate dataInicio, LocalDate dataFim) {
-        super(dataInicio, dataFim);
+    public Paga3Leva4(LocalDate dataInicio, LocalDate dataFim, String id) {
+        super(dataInicio, dataFim, id);
     }
 
     @Override
@@ -87,7 +93,7 @@ class Paga3Leva4 extends Promocao {
     }
 
     @Override
-    public String Promocao(){
+    public String tipoPromocao(){
         return "Pague 3 Leve 4!";
     }
 
