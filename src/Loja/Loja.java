@@ -124,10 +124,19 @@ public class Loja{
      * Método que imprime a lista de Produtos
      */
     public void listarProdutos(){
+        final String YELLOW = "\033[1;93m";
+        final String RESET = "\033[0m";
         for(Produto produto : produtos){
-            if(produto.getStock() != 0)
-                System.out.print(produto.getIdentificador() + "\t");
-                System.out.println(produto);
+            if(produto.getStock() != 0){
+                if(produto.getPromocao()!= null){
+                    System.out.print(YELLOW + produto.getIdentificador() + "\t");
+                    System.out.println(produto + " \"" + produto.getPromocao().Promocao()+"\"" + RESET);
+                }
+                else{
+                    System.out.print(produto.getIdentificador() + "\t");
+                    System.out.println(produto);
+                }
+            }
         }
     }
 
@@ -166,7 +175,7 @@ public class Loja{
     public void ListaVendas(){
         if(vendas.size()!=0)
             for (Venda venda : vendas) {
-                System.out.println(venda + "Preço produtos: " + venda.total() + "\nPreço transporte" + venda.precoTransporte() + "\nPreço total"+ (venda.total()+venda.precoTransporte())+ "€");
+                System.out.println(venda + "Preço produtos: " + venda.total() + "\nPreço transporte: " + venda.precoTransporte() + "\nPreço total: "+ (venda.total()+venda.precoTransporte())+ "€");
                 System.out.println("-------------");
             }
         else System.out.println("Nao registo de vendas.");

@@ -44,6 +44,10 @@ public abstract class Promocao implements Serializable {
     public int nProdutosGratis(int quantidade) {
         return 0;
     }
+
+    public String Promocao(){
+        return "";
+    }
 }
 
 class PagaMenos extends Promocao {
@@ -64,6 +68,11 @@ class PagaMenos extends Promocao {
         }
     }
 
+    @Override
+    public String Promocao(){
+        return "Page Menos!";
+    }
+
 }
 
 class Paga3Leva4 extends Promocao {
@@ -75,6 +84,11 @@ class Paga3Leva4 extends Promocao {
     @Override
     public int nProdutosGratis(int quantidade) {
         return quantidade / 4;
+    }
+
+    @Override
+    public String Promocao(){
+        return "Pague 3 Leve 4!";
     }
 
 }

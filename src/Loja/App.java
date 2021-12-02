@@ -15,11 +15,11 @@ public class App {
         QuimdaEsquina.setListaProdutos(f.listaProdutos());
         QuimdaEsquina.setListaClientes(f.listaClientes());
         QuimdaEsquina.setListaVendas(f.listaVendas());
-        QuimdaEsquina.setListaPromocoes(f.listaPromocoes(QuimdaEsquina.getProdutos(),dataAtual));
+        QuimdaEsquina.setListaPromocoes(f.listaPromocoes(QuimdaEsquina.getProdutos(), dataAtual));
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";
-        int escolha ;
+        int escolha;
         Scanner stdi = new Scanner(System.in);
         do {
             System.out.println("\nMenu:");
@@ -134,7 +134,8 @@ public class App {
                                         String referencia = sc2.nextLine();
                                         Produto p = QuimdaEsquina.find(referencia);
                                         if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
-                                            if(p.getTipoProduto().equals("m") ) mobilia = true;
+                                            if (p.getTipoProduto().equals("m"))
+                                                mobilia = true;
                                             Scanner sc3 = new Scanner(System.in);
                                             while (true) {
                                                 System.out.print("Quantidade: ");
@@ -162,7 +163,8 @@ public class App {
                                     }
                                     System.out.println(vend);
                                     QuimdaEsquina.adicionaVenda(vend);
-                                    System.out.println("O preço a pagar é: " + (vend.total() + vend.precoTransporte()) + " €");
+                                    System.out.println(
+                                            "O preço a pagar é: " + (vend.total() + vend.precoTransporte()) + " €");
                                 }
                                 break;
                             case 0:

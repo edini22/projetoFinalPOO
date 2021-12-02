@@ -7,7 +7,8 @@ import java.util.*;
 
 /**
  * Classe que trata da leitura dos ficheiros e faz o parsing desses dados
- * Opta pela leitura dos ficheiros de objetos quando estes existem, caso contrario são lidos os ficheitos *.txt
+ * Opta pela leitura dos ficheiros de objetos quando estes existem, caso
+ * contrario são lidos os ficheitos *.txt
  */
 public class Ficheiros {
     String dateFormat = "dd/MM/uuuu";
@@ -38,7 +39,9 @@ public class Ficheiros {
 
     /**
      * Método que lê o ficheiro Produtos.obj que contém um ArrayList<Produto>
-     * Caso Produtos.obj não exista, o ficheiro Produtos.txt é lido e é feito o parsing dessa informação 
+     * Caso Produtos.obj não exista, o ficheiro Produtos.txt é lido e é feito o
+     * parsing dessa informação
+     * 
      * @return Lista de produtos lida a partir dos ficheiros
      */
     public ArrayList<Produto> listaProdutos() {
@@ -128,7 +131,9 @@ public class Ficheiros {
 
     /**
      * Método que lê o ficheiro Clientes.obj que contém um ArrayList<Cliente>
-     * Caso Cliente.obj não exista, o ficheiro Clientes.txt é lido e é feito o parsing dessa informação 
+     * Caso Cliente.obj não exista, o ficheiro Clientes.txt é lido e é feito o
+     * parsing dessa informação
+     * 
      * @return Lista de clientes lida a partir dos ficheiros
      */
     public ArrayList<Cliente> listaClientes() {
@@ -180,7 +185,7 @@ public class Ficheiros {
             }
         } else {
             try (FileInputStream fis = new FileInputStream(clientesObj);
-                ObjectInputStream ois = new ObjectInputStream(fis);){
+                    ObjectInputStream ois = new ObjectInputStream(fis);) {
                 c = (ArrayList<Cliente>) ois.readObject();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
@@ -193,10 +198,12 @@ public class Ficheiros {
 
     /**
      * Método que lê o ficheiro Vendas.obj que contém um ArrayList<Venda>
-     * Se este ficheiro não existir significa que a loja ainda não foi inaugorada (não há um registo de vendas)
+     * Se este ficheiro não existir significa que a loja ainda não foi inaugorada
+     * (não há um registo de vendas)
+     * 
      * @return Lista de vendas lida a partir do ficheiro Vendas.obj
      */
-    public ArrayList<Venda> listaVendas(){
+    public ArrayList<Venda> listaVendas() {
         ArrayList<Venda> v = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(vendasObj);
@@ -213,10 +220,12 @@ public class Ficheiros {
 
     /**
      * Método que lê o ficheiro Produtos.obj que contém um ArrayList<Produto>
-     * Se este ficheiro não existir significa que a loja ainda não foi inaugorada (não há um registo de promoções)
+     * Se este ficheiro não existir significa que a loja ainda não foi inaugorada
+     * (não há um registo de promoções)
+     * 
      * @return Lista de vendas lida a partir do ficheiros
      */
-    public ArrayList<Promocao> listaPromocoes(ArrayList<Produto> produtos,LocalDate dataAtual){
+    public ArrayList<Promocao> listaPromocoes(ArrayList<Produto> produtos, LocalDate dataAtual) {
         ArrayList<Promocao> p = new ArrayList<>();
         if (!(promocoesObj.exists() && promocoesObj.isFile())) {
             try (FileReader fr = new FileReader(promocoes); BufferedReader br = new BufferedReader(fr);) {
@@ -234,7 +243,7 @@ public class Ficheiros {
                         LocalDate dataFim = LocalDate.parse(string[3], dateTimeFormatter);
                         string[1] = string[1].toLowerCase();
                         string[1] = string[1].replaceAll("\\s+", "");
-                        if(dataInicio.isBefore(dataAtual) && dataFim.isAfter(dataAtual)) {
+                        if (dataInicio.isBefore(dataAtual) && dataFim.isAfter(dataAtual)) {
                             if (string[0].equals("%")) {
                                 Promocao pm = new PagaMenos(dataInicio, dataFim);
                                 p.add(pm);
@@ -278,8 +287,8 @@ public class Ficheiros {
                 System.out.println("Erro ao ler o ficheiro de clientes!");
             }
         } else {
-            try(FileInputStream fis = new FileInputStream(clientesObj);
-                ObjectInputStream ois = new ObjectInputStream(fis);) {
+            try (FileInputStream fis = new FileInputStream(clientesObj);
+                    ObjectInputStream ois = new ObjectInputStream(fis);) {
                 p = (ArrayList<Promocao>) ois.readObject();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
@@ -292,15 +301,16 @@ public class Ficheiros {
 
     /**
      * Escreve a lista de Produtos no ficheiro de objetos
+     * 
      * @param lista Lista de registos dos produtos da loja
      */
-    public void writeProdutosObj(ArrayList<Produto> lista) { 
+    public void writeProdutosObj(ArrayList<Produto> lista) {
         if (lista.size() == 0)
             return;
         else {
 
             try (FileOutputStream fos = new FileOutputStream(produtosObj);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);){
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);) {
                 oos.writeObject(lista);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Produtos.obj\".");
@@ -310,6 +320,7 @@ public class Ficheiros {
 
     /**
      * Escreve a lista de Clietes no ficheiro de objetos
+     * 
      * @param lista lista de clientes da loja
      */
     public void writeClientesObj(ArrayList<Cliente> lista) {
@@ -327,6 +338,7 @@ public class Ficheiros {
 
     /**
      * Escreve a lista de Vendas no ficheiro de objetos
+     * 
      * @param lista Lista de Vendas da loja
      */
     public void writeVendasObj(ArrayList<Venda> lista) {
@@ -334,7 +346,7 @@ public class Ficheiros {
             return;
         } else {
             try (FileOutputStream fos = new FileOutputStream(vendasObj);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);){
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);) {
                 oos.writeObject(lista);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Vendas.obj\".");
@@ -344,14 +356,15 @@ public class Ficheiros {
 
     /**
      * Escreve a lista de Promocoes no ficheiro de objetos
+     * 
      * @param lista Lista de Promocoes da loja
      */
     public void writePromocoesObj(ArrayList<Promocao> lista) {
         if (lista.size() == 0) {
             return;
         } else {
-            try(FileOutputStream fos = new FileOutputStream(promocoesObj);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+            try (FileOutputStream fos = new FileOutputStream(promocoesObj);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);) {
                 oos.writeObject(lista);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Promocoes.obj\".");
