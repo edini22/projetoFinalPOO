@@ -222,12 +222,12 @@ class Mobiliario extends Produto {
      * @return String formatada do array de dimensões do produto
      */
     private String dimensaoFormatada() {
-        String dim = "[";
+        StringBuilder dim = new StringBuilder("[");//VER O QUE É ISTO
         for (int i : dimensao) {
-            dim += i + " ";
+            dim.append(i).append(" ");
         }
-        dim += "]";
-        return dim;
+        dim.append("]");
+        return dim.toString();
     }
 
     /**

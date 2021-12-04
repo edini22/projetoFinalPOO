@@ -34,7 +34,7 @@ public class App {
                     System.out.print("Tente novamente: ");
                 }
             switch (escolha) {
-                case 1: // UTIIZADOR
+                case 1 -> { // UTIIZADOR
                     Cliente cliente = null;
                     int escolha2;
                     do {
@@ -73,7 +73,7 @@ public class App {
                                     Scanner newclient = new Scanner(System.in);
                                     System.out.print("Nome: ");
                                     String nome = newclient.nextLine();// TODO fazer protecoes para o nome e assim nao
-                                                                       // ser so numeros!
+                                    // ser so numeros!
                                     System.out.print("Morada: ");
                                     String morada = newclient.nextLine();
                                     System.out.print("Telefone: ");
@@ -98,21 +98,24 @@ public class App {
                                         dat = newclient.nextLine();
                                         try {
                                             LocalDate data = LocalDate.parse(dat, dateTimeFormatter);
+                                            Cliente c = new Cliente(nome, morada, telefone, email, data, false);
+                                            QuimdaEsquina.adicionaCliente(c);
+                                            QuimdaEsquina.writeClientesObj();
+                                            cliente = c;
                                             break;
                                         } catch (DateTimeParseException e) {
                                             System.out.print(RED + "Data Invalido\n" + RESET + "Tenta novamente: ");
                                         }
                                     }
-                                    LocalDate dataNascimento = LocalDate.parse(dat, dateTimeFormatter);
-                                    Cliente c = new Cliente(nome, morada, telefone, email, dataNascimento, false);
-                                    QuimdaEsquina.adicionaCliente(c);
-                                    QuimdaEsquina.writeClientesObj();
-                                    cliente = c;
                                 } else {
                                     System.out.println(RED + "A resposta não é válida!" + RESET);
                                 }
                                 break;
                             case 2: // Realizar uma compra
+                                if(LocalDate.now().isAfter(dataAtual)) {
+                                    dataAtual = LocalDate.now();
+                                    QuimdaEsquina.atualizaPromocoes(dataAtual);
+                                }
                                 if (cliente == null) {
                                     System.out.println(RED + "Efetue o login antes de realizar uma compra." + RESET);
                                     break;
@@ -149,10 +152,9 @@ public class App {
                                             else {
                                                 System.out.print("Quer adicionar mais produtos? [S/*] > ");
                                                 String s = sc2.nextLine();
-                                                if (s.equals("s") || s.equals("S")) {
-                                                    continue;
-                                                } else
+                                                if (!(s.equals("s") || s.equals("S"))) {
                                                     break;
+                                                }
                                             }
                                         } else {
                                             System.out.println(RED + "O produto não existe! Tente de novo." + RESET);
@@ -169,9 +171,8 @@ public class App {
                                 break;
                         }
                     } while (escolha2 != 0);
-                    break;
-
-                case 2: // ADMIN
+                }
+                case 2 -> { // ADMIN
                     int escolha3;
                     do {
                         System.out.println("\nMenu Administrador:");
@@ -197,10 +198,14 @@ public class App {
                                 QuimdaEsquina.listaClientes();
                                 break;
                             case 3:
+                                if(LocalDate.now().isAfter(dataAtual)) {
+                                    dataAtual = LocalDate.now();
+                                    QuimdaEsquina.atualizaPromocoes(dataAtual);
+                                }
                                 QuimdaEsquina.listarProdutos();
                                 break;
                             case 4:
-                                int dias = 1;
+                                int dias ;
                                 Scanner scan = new Scanner(System.in);
                                 System.out.println("Insira a quantidade de dias que quer avançar: ");
                                 while (true)
@@ -210,7 +215,8 @@ public class App {
                                     } catch (NumberFormatException nfe) {
                                         System.out.print("Tenta novamente: ");
                                     }
-                                dataAtual = dataAtual.plusDays(dias);
+                                    dataAtual = dataAtual.plusDays(dias);
+                                    QuimdaEsquina.atualizaPromocoes(dataAtual);
                                 break;
                             case 5:
                                 System.out.println(dataAtual);
@@ -220,10 +226,8 @@ public class App {
                         }
 
                     } while (escolha3 != 0);
-                    break;
-
-                case 0:
-                    System.exit(0);
+                }
+                case 0 -> System.exit(0);
             }
         } while (escolha != 0);
 

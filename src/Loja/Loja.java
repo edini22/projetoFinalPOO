@@ -11,8 +11,8 @@ import java.time.format.ResolverStyle;
  * Classe que devine as listas de Clientes, Produtos, Vendas e Promoções
  */
 public class Loja {
-    private String dateFormat = "dd/MM/uuuu";
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
+    private final String dateFormat = "dd/MM/uuuu";
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
             .withResolverStyle(ResolverStyle.STRICT);
     private final File fProdutos = new File("./ficheiros\\Produtos.txt");
     private final File fClientes = new File("./ficheiros\\Clientes.txt");
@@ -38,62 +38,28 @@ public class Loja {
     }
 
     /**
-     * Get Method
-     * 
-     * @return Lista de Clientes
-     */
-    public ArrayList<Cliente> getClientes() {
-        return clientes;
-    }
-
-    /**
-     * Get Method
-     * 
-     * @return Lista de Produtos
-     */
-    public ArrayList<Produto> getProdutos() {
-        return produtos;
-    }
-
-    /**
-     * Get Method
-     * 
-     * @return Lista de Vendas
-     */
-    public ArrayList<Venda> getVendas() {
-        return vendas;
-    }
-
-    /**
-     * Get Method
-     * 
-     * @return Lista de Promoções
-     */
-    public ArrayList<Promocao> getPromocoes() {
-        return promocoes;
-    }
-
-    /**
      * Metodo que define a lista de Produtos da Loja
-     * 
-     * @param l lista de produtos
      */
     public void setListaProdutos() {
         if (!(fProdutosObj.exists() && fProdutosObj.isFile())) {
-            try (FileReader fr = new FileReader(fProdutos); BufferedReader br = new BufferedReader(fr);) {
+            try (FileReader fr = new FileReader(fProdutos); BufferedReader br = new BufferedReader(fr)) {
                 String line;
+                int linha = 0;
                 while ((line = br.readLine()) != null) {
+                    linha++;
                     String[] string = line.split(";");
                     string[0] = string[0].replaceAll("\\s+", "");
                     string[1] = string[1].strip();
                     char[] ref = string[0].toCharArray();
                     if (ref[0] == 'a') {
-                        if (string.length != 6)
+                        if (string.length != 6) {
+                            System.out.printf("Numero de parametros incorretos no ficheiro \"Produtos.txt\" na linha %d(divida os parametros com um ';')\n", linha);
                             System.exit(1);
-                        double preco = 0;
-                        int stock = 0;
-                        int calorias = 0;
-                        int pGordura = 0;
+                        }
+                        double preco;
+                        int stock;
+                        int calorias;
+                        int pGordura;
                         try {
                             preco = Double.parseDouble(string[2]);
                             stock = Integer.parseInt(string[3]);
@@ -102,14 +68,17 @@ public class Loja {
                             Alimentar a = new Alimentar(string[0], string[1], preco, stock, calorias, pGordura);
                             produtos.add(a);
                         } catch (Exception e) {
-                            System.out.println("erro!");
+                            System.out.printf("Erro num dos parrametros [2:5] na linha %d do ficheiro \"Produtos.txt\"\n",linha);
+                            System.exit(1);
                         }
                     } else if (ref[0] == 'l') {
-                        if (string.length != 5)
+                        if (string.length != 5) {
+                            System.out.printf("Numero de parametros incorretos no ficheiro \"Produtos.txt\" na linha %d(divida os parametros com um ';')\n",linha);
                             System.exit(1);
-                        double preco = 0;
-                        int stock = 0;
-                        int toxidade = 0;
+                        }
+                        double preco;
+                        int stock;
+                        int toxidade;
                         try {
                             preco = Double.parseDouble(string[2]);
                             stock = Integer.parseInt(string[3]);
@@ -117,16 +86,19 @@ public class Loja {
                             Limpeza limpeza = new Limpeza(string[0], string[1], preco, stock, toxidade);
                             produtos.add(limpeza);
                         } catch (Exception e) {
-                            System.out.println("erro!");
+                            System.out.printf("Erro num dos parrametros [2:4] na linha %d do ficheiro \"Produtos.txt\"\n",linha);
+                            System.exit(1);
                         }
 
                     } else if (ref[0] == 'm') {
-                        if (string.length != 8)
+                        if (string.length != 8) {
+                            System.out.printf("Numero de parametros incorretos no ficheiro \"Produtos.txt\" na linha %d(divida os parametros com um ';')\n",linha);
                             System.exit(1);
+                        }
                         int[] dimensao = new int[3];
-                        int stock = 0;
-                        double preco = 0;
-                        double peso = 0;
+                        int stock;
+                        double preco;
+                        double peso;
                         try {
                             preco = Double.parseDouble(string[2]);
                             stock = Integer.parseInt(string[3]);
@@ -137,24 +109,29 @@ public class Loja {
                             Mobiliario m = new Mobiliario(string[0], string[1], preco, stock, peso, dimensao);
                             produtos.add(m);
                         } catch (Exception e) {
-                            System.out.println("erro!");
+                            System.out.printf("Erro num dos parrametros [2:7] na linha %d do ficheiro \"Produtos.txt\"\n",linha);
+                            System.exit(1);
                         }
-                    } else
-                        System.out.println("errou a referencia");
-
+                    } else {
+                        System.out.printf("Erro no parametro 0 na linha %d  do ficheiro \"Produtos.txt\"\n", linha);
+                        System.exit(3);
+                    }
                 }
             } catch (IOException e) {
-                System.out.println("Erro ao ler o ficheiro de Produtos!");
+                System.out.println("Erro ao ler o ficheiro \"Produtos.txt\"!\n");
+                System.exit(4);
             }
             writeProdutosObj();
         } else {
             try (FileInputStream fis = new FileInputStream(fProdutosObj);
-                    ObjectInputStream ois = new ObjectInputStream(fis);) {
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
                 produtos = (ArrayList<Produto>) ois.readObject();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Produto.obj\".");
+                System.exit(2);
             } catch (ClassNotFoundException cnf) {
                 System.out.println("Classe \"Produto\" nao encontrada");
+                System.exit(1);
             }
         }
 
@@ -162,101 +139,108 @@ public class Loja {
 
     /**
      * Metodo que define a lista de Clientes da Loja
-     * 
-     * @param l lista de produtos
      */
     public void setListaClientes() {
         if (!(fClientesObj.exists() && fClientesObj.isFile())) {
-            try (FileReader fr = new FileReader(fClientes); BufferedReader br = new BufferedReader(fr);) {
+            try (FileReader fr = new FileReader(fClientes); BufferedReader br = new BufferedReader(fr)) {
                 String line;
+                int linha = 0;
                 while ((line = br.readLine()) != null) {
+                    linha++;
                     String[] string = line.split(";");
-                    if (string.length != 6)
+                    if (string.length != 6){
+                        System.out.printf("Numero de parametros incorretos no ficheiro \"Clientes.txt\" na linha %d(divida os parametros com um ';')\n",linha);
                         System.exit(1);
+                    }
+
                     string[0] = string[0].strip();
                     string[1] = string[1].strip();
-                    int telefone = 0;
+                    int telefone;
                     if (!string[3].contains("@")) {
-                        System.out.println("Email Invalido!\n");
+                        System.out.printf("Email Invalido na linha %d!\n",linha);
                         System.exit(1);
                     }
                     string[3] = string[3].replaceAll("\\s+", "");
+                    string[5] = string[5].toLowerCase();
+                    string[5] = string[5].replaceAll("\\s+", "");
                     try {
                         telefone = Integer.parseInt(string[2]);
                         LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);
-                    } catch (DateTimeParseException e) {
-                        System.out.print("Data Invalido\n");
-                        System.exit(3);
-                    } catch (Exception e) {
-                        System.out.println("Telefone de um cliente invalido!");
-                        System.exit(3);
-                    }
-                    string[5] = string[5].toLowerCase();
-                    string[5] = string[5].replaceAll("\\s+", "");
-                    boolean frequente = false;
-                    if (string[5].equals("true")) {
-                        frequente = true;
-                    } else if (string[5].equals("false")) {
+                        boolean frequente = false;
+                        if (string[5].equals("true")) {
+                            frequente = true;
+                        } else if (string[5].equals("false")) {
 
-                    } else {
-                        System.out.println(
-                                "erro no Cliente ser frequente ou nao, verifique se tem true ou false no ultimo parametro!");
+                        } else {
+                            System.out.printf(
+                                    "Erro no Cliente ser frequente ou nao na linha %d, verifique se tem true ou false no ultimo parametro!\n",linha);
+                            System.exit(1);
+                        }
+                        Cliente cl = new Cliente(string[0], string[1], telefone, string[3], data, frequente);
+                        clientes.add(cl);
+                    } catch (DateTimeParseException e) {
+                        System.out.printf("Data Invalido na linha %d(formato: dd/mm/aaaa)\n",linha);
+                        System.exit(1);
+                    } catch (Exception e) {
+                        System.out.printf("Telefone de um cliente invalido na linha %d!\n",linha);
                         System.exit(1);
                     }
-
-                    LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);
-                    Cliente cl = new Cliente(string[0], string[1], telefone, string[3], data, frequente);
-                    clientes.add(cl);
                 }
             } catch (IOException e) {
                 System.out.println("Erro ao ler o ficheiro de clientes!");
+                System.exit(2);
             }
             writeClientesObj();
         } else {
             try (FileInputStream fis = new FileInputStream(fClientesObj);
-                    ObjectInputStream ois = new ObjectInputStream(fis);) {
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
                 clientes = (ArrayList<Cliente>) ois.readObject();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
+                System.exit(2);
             } catch (ClassNotFoundException cnf) {
                 System.out.println("Classe \"Cliente\" nao encontrada");
+                System.exit(1);
             }
         }
     }
 
     /**
      * Metodo que define a lista de Vendas da Loja
-     * 
-     * @param l lista de produtos
      */
     public void setListaVendas() {
         if (!(fVendasObj.exists() && fVendasObj.isFile())) {
             System.out.println("Ainda nao foi inaugurada a loja!");
         } else {
             try (FileInputStream fis = new FileInputStream(fVendasObj);
-                    ObjectInputStream ois = new ObjectInputStream(fis);) {
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
                 vendas = (ArrayList<Venda>) ois.readObject();
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Clientes.obj\".");
+                System.exit(2);
             } catch (ClassNotFoundException cnf) {
                 System.out.println("Classe \"Cliente\" nao encontrada");
+                System.exit(1);
             }
         }
     }
 
     /**
      * Metodo que define a lista de Promções da Loja
-     * 
-     * @param l lista de produtos
      */
     public void setListaPromocoes(LocalDate dataAtual) {
         if (!(fPromocoesObj.exists() && fPromocoesObj.isFile())) {
-            try (FileReader fr = new FileReader(fPromocoes); BufferedReader br = new BufferedReader(fr);) {
+            try (FileReader fr = new FileReader(fPromocoes); BufferedReader br = new BufferedReader(fr)) {
                 String line;
+                int linha = 0;
                 while ((line = br.readLine()) != null) {
+                    linha++;
                     String[] string = line.split(";");
-                    if (string.length != 4)
+                    if (string.length != 4){
+                        System.out.printf("Numero de parametros incorretos no ficheiro \"Promoçoes.txt\" na linha %d(divida os parametros com um ';')\n",linha);
                         System.exit(1);
+                    }
+
                     string[0] = string[0].strip();
                     boolean id = false;
                     try {
@@ -277,8 +261,8 @@ public class Loja {
                                         id = true;
                                     }
                                 }
-                                if (id == false) {
-                                    System.out.println("Identificador de Produto nas Promocoes incorreto!");
+                                if (!id) {
+                                    System.out.printf("Identificador de Produto nas Promocoes incorreto na linha %d!\n",linha);
                                     System.exit(2);
                                 }
 
@@ -292,29 +276,30 @@ public class Loja {
                                         id = true;
                                     }
                                 }
-                                if (id == false) {
-                                    System.out.println("Identificador de Produto nas Promocoes incorreto!");
+                                if (!id) {
+                                    System.out.printf("Identificador de Produto nas Promocoes incorreto na linha %d!\n",linha);
                                     System.exit(2);
                                 }
                             } else {
-                                System.out.println(
-                                        "erro no tipo de promocao!");
+                                System.out.printf(
+                                        "erro no tipo de promocao ou no tipo de produto na linha %d!\n",linha);
                                 System.exit(1);
                             }
                         }
 
                     } catch (DateTimeParseException e) {
-                        System.out.print("Data Invalido\n");
+                        System.out.printf("Data Invalido no ficheiro \"Promocoes.txt\" na linha %d\n",linha);
                         System.exit(3);
                     }
                 }
             } catch (IOException e) {
                 System.out.println("Erro ao ler o ficheiro de clientes!");
+                System.exit(1);
             }
             writePromocoesObj();
         } else {
             try (FileInputStream fis = new FileInputStream(fPromocoesObj);
-                    ObjectInputStream ois = new ObjectInputStream(fis);) {
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
                 promocoes = (ArrayList<Promocao>) ois.readObject();
                 for (Promocao p : promocoes) {
                     if (p.getDataInicio().isBefore(dataAtual) && p.getDataFim().isAfter(dataAtual))
@@ -328,23 +313,21 @@ public class Loja {
 
             } catch (IOException ioe) {
                 System.out.println("Erro ao ler o ficheiro \"Promocoes.obj\".");
+                System.exit(2);
             } catch (ClassNotFoundException cnf) {
                 System.out.println("Classe \"Promocao\" nao encontrada");
+                System.exit(1);
             }
         }
     }
 
     /**
      * Escreve a lista de Produtos no ficheiro de objetos
-     * 
-     * @param lista Lista de registos dos produtos da loja
      */
     public void writeProdutosObj() {
-        if (produtos.size() == 0)
-            return;
-        else {
+        if (produtos.size() != 0) {
             try (FileOutputStream fos = new FileOutputStream(fProdutosObj);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 oos.writeObject(produtos);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Produtos.obj\".");
@@ -354,15 +337,11 @@ public class Loja {
 
     /**
      * Escreve a lista de Clietes no ficheiro de objetos
-     * 
-     * @param lista lista de clientes da loja
      */
     public void writeClientesObj() {
-        if (clientes.size() == 0)
-            return;
-        else {
+        if (clientes.size() != 0){
             try (FileOutputStream fos = new FileOutputStream(fClientesObj);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 oos.writeObject(clientes);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Clientes.obj\".");
@@ -372,15 +351,11 @@ public class Loja {
 
     /**
      * Escreve a lista de Vendas no ficheiro de objetos
-     * 
-     * @param lista Lista de Vendas da loja
      */
     public void writeVendasObj() {
-        if (vendas.size() == 0) {
-            return;
-        } else {
+        if (vendas.size() != 0) {
             try (FileOutputStream fos = new FileOutputStream(fVendasObj);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 oos.writeObject(vendas);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Vendas.obj\".");
@@ -390,18 +365,34 @@ public class Loja {
 
     /**
      * Escreve a lista de Promocoes no ficheiro de objetos
-     * 
-     * @param lista Lista de Promocoes da loja
      */
     public void writePromocoesObj() {
-        if (promocoes.size() == 0) {
-            return;
-        } else {
+        if (promocoes.size() != 0) {
             try (FileOutputStream fos = new FileOutputStream(fPromocoesObj);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 oos.writeObject(promocoes);
             } catch (IOException ioe) {
                 System.out.println("Erro ao escrever no ficheiro \"Promocoes.obj\".");
+            }
+        }
+    }
+
+    /**
+     * Método que atualiza as Promocoes se o dia mudar
+     * @param dataAtual data a verificar as promocoes
+     */
+    public void atualizaPromocoes(LocalDate dataAtual){
+        for(Produto p: produtos) {
+            if (p.getPromocao() != null) {
+                if (!((p.getPromocao().getDataInicio().isBefore(dataAtual) || p.getPromocao().getDataInicio().isEqual(dataAtual)) && (p.getPromocao().getDataFim().isAfter(dataAtual) || p.getPromocao().getDataFim().isEqual(dataAtual)))) {
+                    p.setPromocao(null);
+                }
+                else continue;
+            }
+            for(Promocao promocao : promocoes){
+                if((promocao.getDataInicio().isBefore(dataAtual) || promocao.getDataInicio().isEqual(dataAtual)) && (promocao.getDataFim().isAfter(dataAtual) || promocao.getDataFim().isEqual(dataAtual)) && promocao.getId().equals(p.getIdentificador())){
+                    p.setPromocao(promocao);
+                }
             }
         }
     }
@@ -432,15 +423,6 @@ public class Loja {
      */
     public void adicionaVenda(Venda v) {
         vendas.add(v);
-    }
-
-    /**
-     * Método que adiciona um produto à lista de Produtos
-     * 
-     * @param p produto a adicionar a lista
-     */
-    public void adicionaProduto(Produto p) {
-        produtos.add(p);
     }
 
     /**

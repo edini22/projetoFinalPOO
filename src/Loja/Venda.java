@@ -49,11 +49,11 @@ public class Venda implements Serializable {
      * @return lista de items de uma venda
      */
     private String listaProdutos() {
-        String lista = "";
+        StringBuilder lista = new StringBuilder();
         for (Item i : items) {
-            lista += "\t >" + i.fatura() + "\n";
+            lista.append("\t >").append(i.fatura()).append("\n");
         }
-        return lista;
+        return lista.toString();
     }
 
     public String toString() {
@@ -75,7 +75,7 @@ public class Venda implements Serializable {
 
     public int precoTransporte() {
         int preco = 0;
-        if (consumidor.getFrequente() == true){
+        if (consumidor.getFrequente()){
             if (total() <= 40)
                 preco += 15;
         }
