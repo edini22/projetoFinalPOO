@@ -251,7 +251,7 @@ public class Loja {
                         string[1] = string[1].toLowerCase();
                         string[1] = string[1].replaceAll("\\s+", "");
                         String[] s = string[1].split("");
-                        if (dataInicio.isBefore(dataAtual) && dataFim.isAfter(dataAtual)) {
+                        if ((dataInicio.isBefore(dataAtual) || dataInicio.isEqual(dataAtual)) && (dataFim.isAfter(dataAtual) || dataFim.isEqual(dataAtual))) {
                             if (string[0].equals("%") && (s[0].equals("m") || s[0].equals("a") || s[0].equals("l"))) {
                                 Promocao pm = new PagaMenos(dataInicio, dataFim, string[1]);
                                 promocoes.add(pm);
@@ -302,7 +302,7 @@ public class Loja {
                     ObjectInputStream ois = new ObjectInputStream(fis)) {
                 promocoes = (ArrayList<Promocao>) ois.readObject();
                 for (Promocao p : promocoes) {
-                    if (p.getDataInicio().isBefore(dataAtual) && p.getDataFim().isAfter(dataAtual))
+                    if ((p.getDataInicio().isBefore(dataAtual) || p.getDataInicio().isEqual(dataAtual)) && (p.getDataFim().isAfter(dataAtual) || p.getDataFim().isEqual(dataAtual)))
                         for (Produto produto : produtos) {
                             if (p.getId().equals(produto.getIdentificador())) {
                                 produto.setPromocao(p);
