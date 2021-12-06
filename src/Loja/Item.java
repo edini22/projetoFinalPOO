@@ -3,7 +3,7 @@ package Loja;
 import java.io.Serializable;
 
 /**
- * Classe auxiliar que contém um produto e a quantidade desse protudo
+ * Classe auxiliar que contem um produto e a quantidade desse protudo
  */
 public class Item implements Serializable {
     private final Produto p;
@@ -48,7 +48,7 @@ public class Item implements Serializable {
     }
 
     /**
-     * Método que aumenta a quantidade de um dado produto se o cliente comprar duas
+     * Metodo que aumenta a quantidade de um dado produto se o cliente comprar duas
      * vezes o mesmo produto
      * 
      * @param q quantidade a aumentar
@@ -58,7 +58,7 @@ public class Item implements Serializable {
     }
 
     /**
-     * Calcula o preço total desse conjunto de produtos, quer tenha ou não promoção
+     * Calcula o preco total desse conjunto de produtos, quer tenha ou nao promocao
      */
     public double conta() {
         if (p.getPromocao() == null)

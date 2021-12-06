@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Classe que contém os atributos de uma Venda
+ * Classe que contem os atributos de uma Venda
  */
 public class Venda implements Serializable {
     private Cliente consumidor;
@@ -23,7 +23,7 @@ public class Venda implements Serializable {
     }
 
     /**
-     * Método que adiciona um item à venda
+     * Metodo que adiciona um item a venda
      * 
      * @param item conjunto de produtos iguais a adicionar a compra
      */
@@ -44,7 +44,7 @@ public class Venda implements Serializable {
     }
 
     /**
-     * Método que Devolve uma String dos items da venda formatados
+     * Metodo que Devolve uma String dos items da venda formatados
      * 
      * @return lista de items de uma venda
      */
@@ -61,9 +61,9 @@ public class Venda implements Serializable {
     }
 
     /**
-     * Calcula o preço total dos Produtos na Venda
+     * Calcula o preco total dos Produtos na Venda
      * 
-     * @return preço total da venda
+     * @return preco total da venda
      */
     public double total() {
         double total = 0;

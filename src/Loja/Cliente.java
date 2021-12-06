@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * Classe que contém os atributos de um Cliente
+ * Classe que contem os atributos de um Cliente
  */
 public class Cliente implements Serializable {
     private final String nome;
@@ -22,7 +22,7 @@ public class Cliente implements Serializable {
      * @param telefone       Telefone do cliente
      * @param email          Email do cliente
      * @param dataNascimento Data de nascimento do cliente
-     * @param frequente      Frequência do cliente
+     * @param frequente      Frequencia do cliente
      */
     public Cliente(String nome, String morada, int telefone, String email, LocalDate dataNascimento,
             boolean frequente) {
@@ -43,6 +43,10 @@ public class Cliente implements Serializable {
         return email;
     }
 
+    /**
+     * Get method
+     * @return frequente
+     */
     public boolean getFrequente() {
         return frequente;
     }
@@ -50,7 +54,7 @@ public class Cliente implements Serializable {
     /**
      * ToString method
      * 
-     * @return String que contém os dados do cliente
+     * @return String que contem os dados do cliente
      */
     public String toString() {
         return "Nome: " + nome + "\nMorada: " + morada + "\nTelefone: " + telefone + "\nEmail: " + email

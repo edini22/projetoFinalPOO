@@ -3,7 +3,7 @@ package Loja;
 import java.io.*;
 
 /**
- * Classe que contém os atributos de um produto
+ * Classe que contem os atributos de um produto
  */
 public abstract class Produto implements Serializable {
     private String identificador;
@@ -15,9 +15,9 @@ public abstract class Produto implements Serializable {
     /**
      * Construtor
      * 
-     * @param identificador referência do produto
+     * @param identificador referencia do produto
      * @param nome          nome do produto
-     * @param preco         preço do produto
+     * @param preco         preco do produto
      * @param stock         quantidade de stock existente do produto
      */
     public Produto(String identificador, String nome, double preco, int stock) {
@@ -29,7 +29,7 @@ public abstract class Produto implements Serializable {
     }
 
     /**
-     * Método que retira stock ao produto
+     * Metodo que retira stock ao produto
      * 
      * @param n quantidade de produtos que se vai retirar ao stock
      */
@@ -37,14 +37,9 @@ public abstract class Produto implements Serializable {
         stock -= n;
     }
 
-    public String getTipoProduto() {
-        identificador = identificador.toLowerCase();
-        String[] id = identificador.split("");
-        return id[0];
-    }
 
     /**
-     * Método que adiciona stock ao produto
+     * Metodo que adiciona stock ao produto
      * 
      * @param n quantidade de produtos que se vai adicionar ao stock
      */
@@ -55,7 +50,7 @@ public abstract class Produto implements Serializable {
     /**
      * ToString Method
      * 
-     * @return Strinf formatada com os aributos do Produto
+     * @return String formatada com os aributos do Produto
      */
     public String toString() {
         return "nome: " + nome + " preço: " + preco + " stock: " + stock;
@@ -91,7 +86,7 @@ public abstract class Produto implements Serializable {
     /**
      * Get Method
      * 
-     * @return preço
+     * @return preco
      */
     public double getPreco() {
         return preco;
@@ -109,7 +104,7 @@ public abstract class Produto implements Serializable {
     /**
      * Get Method
      * 
-     * @return promoção
+     * @return promocao
      */
     public Promocao getPromocao() {
         return promocao;
@@ -118,7 +113,7 @@ public abstract class Produto implements Serializable {
     /**
      * Set Method
      * 
-     * @param p Promocao a colocar no atributo
+     * @param p Promocao a colocar no atributo promocao
      */
     public void setPromocao(Promocao p) {
         this.promocao = p;
@@ -133,10 +128,11 @@ class Alimentar extends Produto {
     private int pGordura;
 
     /**
+     * Construtor
      * 
-     * @param identificador referência do produto
+     * @param identificador referencia do produto
      * @param nome          nome do produto
-     * @param preco         preço do produto
+     * @param preco         preco do produto
      * @param stock         quantidade de stock existente do produto
      * @param calorias      quantidade de calorias do produto alimentar
      * @param pGordura      percentagem de gordura do produto
@@ -166,10 +162,11 @@ class Limpeza extends Produto {
     private int toxidade;
 
     /**
+     * Construtor
      * 
-     * @param identificador referência do produto
+     * @param identificador referencia do produto
      * @param nome          nome do produto
-     * @param preco         preço do produto
+     * @param preco         preco do produto
      * @param stock         quantidade de stock existente do produto
      * @param toxidade      toxicidade do produto
      */
@@ -190,24 +187,25 @@ class Limpeza extends Produto {
 }
 
 /**
- * Classe descendente de Produto que define os produtos de mobiliário
+ * Classe descendente de Produto que define os produtos de mobiliario
  */
 class Mobiliario extends Produto {
     private double peso;
     private int[] dimensao;
 
     /**
+     * Construtor
      * 
-     * @param identificador referência do produto
+     * @param identificador referencia do produto
      * @param nome          nome do produto
-     * @param preco         preço do produto
+     * @param preco         preco do produto
      * @param stock         quantidade de stock existente do produto
      * @param peso          peso do produto
      * @param dimensao      array de dimensoes do produto Comprimento*Largura*Altura
      */
     public Mobiliario(String identificador, String nome, double preco, int stock, double peso, int[] dimensao) {
         super(identificador, nome, preco, stock);
-        this.dimensao = new int[3];// TODO Fazer proteçoes acerca do tamanho do array
+        this.dimensao = new int[3];
         this.peso = peso;
         this.dimensao = dimensao;
     }
@@ -219,10 +217,10 @@ class Mobiliario extends Produto {
 
     /**
      * 
-     * @return String formatada do array de dimensões do produto
+     * @return String formatada do array de dimensoes do produto
      */
     private String dimensaoFormatada() {
-        StringBuilder dim = new StringBuilder("[");//VER O QUE É ISTO
+        StringBuilder dim = new StringBuilder("[");
         for (int i : dimensao) {
             dim.append(i).append(" ");
         }

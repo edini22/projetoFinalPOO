@@ -7,19 +7,19 @@ import java.util.*;
 public class App {
     public static void main(String[] args) {
         LocalDate dataAtual = LocalDate.now();
-        Loja QuimdaEsquina = new Loja();
+        Loja supermercado = new Loja();
         String dateFormat = "dd/MM/uuuu";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
                 .withResolverStyle(ResolverStyle.STRICT);
-        QuimdaEsquina.setListaProdutos();
-        QuimdaEsquina.setListaClientes();
-        QuimdaEsquina.setListaVendas();
-        QuimdaEsquina.setListaPromocoes( dataAtual);
+        supermercado.setListaProdutos();
+        supermercado.setListaClientes();
+        supermercado.setListaVendas();
+        supermercado.setListaPromocoes(dataAtual);
         final String RESET = "\033[0m";
         final String RED = "\033[0;31m";
         final String GREEN = "\033[0;32m";
         int escolha;
-        Scanner stdi = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         do {
             System.out.println("\nMenu:");
             System.out.println("  1 - Realizar o login como utilizador");
@@ -28,7 +28,7 @@ public class App {
             System.out.print("> ");
             while (true)
                 try {
-                    escolha = Integer.parseInt(stdi.nextLine());
+                    escolha = Integer.parseInt(input.nextLine());
                     break;
                 } catch (NumberFormatException nfe) {
                     System.out.print("Tente novamente: ");
@@ -45,7 +45,7 @@ public class App {
                         System.out.print("> ");
                         while (true)
                             try {
-                                escolha2 = Integer.parseInt(stdi.nextLine());
+                                escolha2 = Integer.parseInt(input.nextLine());
                                 break;
                             } catch (NumberFormatException nfe) {
                                 System.out.print("Tente novamente: ");
@@ -56,26 +56,41 @@ public class App {
                                 System.out.print(">");
                                 Scanner std = new Scanner(System.in);
                                 String registado = std.nextLine();
-                                registado = registado.trim();
-                                if (registado.equals("s") || registado.equals("S")) {
+                                registado = registado.trim().toLowerCase();
+                                if (registado.equals("s")) {
                                     Scanner sc = new Scanner(System.in);
                                     while (true) {
                                         System.out.print("Introduza o email: ");
                                         String email = sc.nextLine();
-                                        cliente = QuimdaEsquina.efetuarLogin(email);
+                                        cliente = supermercado.efetuarLogin(email);
                                         if (cliente != null) {
                                             System.out.println(GREEN + "Login com sucesso!" + RESET);
                                             break;
                                         } else
                                             System.out.println(RED + "E-mail incorreto!" + RESET);
                                     }
-                                } else if (registado.equals("n") || registado.equals("N")) {
+                                } else if (registado.equals("n")) {
                                     Scanner newclient = new Scanner(System.in);
                                     System.out.print("Nome: ");
-                                    String nome = newclient.nextLine();// TODO fazer protecoes para o nome e assim nao
-                                    // ser so numeros!
+                                    String nome;
+                                    while (true){
+                                        nome = newclient.nextLine();
+                                        if(nome.length()<1){
+                                            System.out.print("Digite um nome valido: ");
+                                            continue;
+                                        }
+                                        else break;
+                                    }
                                     System.out.print("Morada: ");
-                                    String morada = newclient.nextLine();
+                                    String morada;
+                                    while (true){
+                                        morada = newclient.nextLine();
+                                        if(morada.length()<1){
+                                            System.out.print("Digite um nome valido: ");
+                                            continue;
+                                        }
+                                        else break;
+                                    }
                                     System.out.print("Telefone: ");
                                     int telefone;
                                     while (true)
@@ -89,7 +104,7 @@ public class App {
                                     String email = "";
                                     while (!email.contains("@")) {
                                         email = newclient.nextLine();
-                                        if (!email.contains("@"))
+                                        if (!email.contains("@") && email.length()<4)
                                             System.out.println(RED + "Email Invalido!\n" + RESET + "Tente novamente:");
                                     }
                                     String dat;
@@ -99,8 +114,8 @@ public class App {
                                         try {
                                             LocalDate data = LocalDate.parse(dat, dateTimeFormatter);
                                             Cliente c = new Cliente(nome, morada, telefone, email, data, false);
-                                            QuimdaEsquina.adicionaCliente(c);
-                                            QuimdaEsquina.writeClientesObj();
+                                            supermercado.adicionaCliente(c);
+                                            supermercado.writeClientesObj();
                                             cliente = c;
                                             break;
                                         } catch (DateTimeParseException e) {
@@ -114,27 +129,27 @@ public class App {
                             case 2: // Realizar uma compra
                                 if(LocalDate.now().isAfter(dataAtual)) {
                                     dataAtual = LocalDate.now();
-                                    QuimdaEsquina.atualizaPromocoes(dataAtual);
+                                    supermercado.atualizaPromocoes(dataAtual);
                                 }
                                 if (cliente == null) {
                                     System.out.println(RED + "Efetue o login antes de realizar uma compra." + RESET);
                                     break;
                                 }
 
-                                if (QuimdaEsquina.stock() == 0)
+                                if (supermercado.stock() == 0)
                                     System.out.println(RED + "Não existem produtos com stock na loja!" + RESET);
                                 else {
                                     Scanner sc2 = new Scanner(System.in);
                                     Venda vend = new Venda(cliente);
                                     System.out
                                             .println("Escolha a referência de um produto para adicionar à sua compra");
-                                    QuimdaEsquina.listarProdutos();
+                                    supermercado.listarProdutos();
                                     while (true) {
-                                        if (QuimdaEsquina.stock() == 0)
+                                        if (supermercado.stock() == 0)
                                             break;
                                         System.out.print("Referência > ");
                                         String referencia = sc2.nextLine();
-                                        Produto p = QuimdaEsquina.find(referencia);
+                                        Produto p = supermercado.find(referencia);
                                         if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
                                             Scanner sc3 = new Scanner(System.in);
                                             while (true) {
@@ -147,7 +162,7 @@ public class App {
                                                 } else
                                                     System.out.println(RED + "Quantidade invalida" + RESET);
                                             }
-                                            if (QuimdaEsquina.stock() == 0)
+                                            if (supermercado.stock() == 0)
                                                 break;
                                             else {
                                                 System.out.print("Quer adicionar mais produtos? [S/*] > ");
@@ -161,8 +176,8 @@ public class App {
                                         }
                                     }
                                     System.out.println(vend);
-                                    QuimdaEsquina.adicionaVenda(vend);
-                                    QuimdaEsquina.writeVendasObj();
+                                    supermercado.adicionaVenda(vend);
+                                    supermercado.writeVendasObj();
                                     System.out.println(
                                             "O preço a pagar é: " + (vend.total() + vend.precoTransporte()) + " €");
                                 }
@@ -185,24 +200,24 @@ public class App {
                         System.out.print("> ");
                         while (true)
                             try {
-                                escolha3 = Integer.parseInt(stdi.nextLine());
+                                escolha3 = Integer.parseInt(input.nextLine());
                                 break;
                             } catch (NumberFormatException nfe) {
                                 System.out.print("Tente novamente: ");
                             }
                         switch (escolha3) {
                             case 1:
-                                QuimdaEsquina.listaVendas();
+                                supermercado.listaVendas();
                                 break;
                             case 2:
-                                QuimdaEsquina.listaClientes();
+                                supermercado.listaClientes();
                                 break;
                             case 3:
                                 if(LocalDate.now().isAfter(dataAtual)) {
                                     dataAtual = LocalDate.now();
-                                    QuimdaEsquina.atualizaPromocoes(dataAtual);
+                                    supermercado.atualizaPromocoes(dataAtual);
                                 }
-                                QuimdaEsquina.listarProdutos();
+                                supermercado.listarProdutos();
                                 break;
                             case 4:
                                 int dias ;
@@ -211,12 +226,16 @@ public class App {
                                 while (true)
                                     try {
                                         dias = Integer.parseInt(scan.nextLine());
+                                        if(dias < 0){
+                                            System.out.println("Indique uma quantidade valida: ");
+                                            continue;
+                                        }
                                         break;
                                     } catch (NumberFormatException nfe) {
                                         System.out.print("Tenta novamente: ");
                                     }
                                     dataAtual = dataAtual.plusDays(dias);
-                                    QuimdaEsquina.atualizaPromocoes(dataAtual);
+                                    supermercado.atualizaPromocoes(dataAtual);
                                 break;
                             case 5:
                                 System.out.println(dataAtual);
@@ -230,6 +249,6 @@ public class App {
                 case 0 -> System.exit(0);
             }
         } while (escolha != 0);
-
+        input.close();
     }
 }

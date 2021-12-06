@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
 /**
- * Classe que devine as listas de Clientes, Produtos, Vendas e Promoções
+ * Classe que devine as listas de Clientes, Produtos, Vendas e Promocoes
  */
 public class Loja {
     private final String dateFormat = "dd/MM/uuuu";
@@ -28,7 +28,7 @@ public class Loja {
 
     /**
      * Construtor
-     * Cria os ArrayList para os Clientes, Produtos, Vendas e Promoções
+     * Cria os ArrayList para os Clientes, Produtos, Vendas e Promocoes
      */
     public Loja() {
         clientes = new ArrayList<>();
@@ -226,7 +226,7 @@ public class Loja {
     }
 
     /**
-     * Metodo que define a lista de Promções da Loja
+     * Metodo que define a lista de Promcoes da Loja
      */
     public void setListaPromocoes(LocalDate dataAtual) {
         if (!(fPromocoesObj.exists() && fPromocoesObj.isFile())) {
@@ -378,7 +378,7 @@ public class Loja {
     }
 
     /**
-     * Método que atualiza as Promocoes se o dia mudar
+     * Metodo que atualiza as Promocoes se o dia mudar
      * @param dataAtual data a verificar as promocoes
      */
     public void atualizaPromocoes(LocalDate dataAtual){
@@ -398,7 +398,7 @@ public class Loja {
     }
 
     /**
-     * Método que adiciona um cliente à lista de Clientes
+     * Metodo que adiciona um cliente a lista de Clientes
      * 
      * @param c cliente a adicionar a lista
      */
@@ -407,7 +407,7 @@ public class Loja {
     }
 
     /**
-     * Método que imprime a lista de clientes
+     * Metodo que imprime a lista de clientes
      */
     public void listaClientes() {
         for (Cliente cliente : clientes) {
@@ -417,7 +417,7 @@ public class Loja {
     }
 
     /**
-     * Método que adiciona uma venda à lista de Vendas
+     * Metodo que adiciona uma venda a lista de Vendas
      * 
      * @param v venda a adicionar a lista
      */
@@ -426,7 +426,7 @@ public class Loja {
     }
 
     /**
-     * Método que imprime a lista de Produtos
+     * Metodo que imprime a lista de Produtos
      */
     public void listarProdutos() {
         final String YELLOW = "\033[1;93m";
@@ -445,7 +445,7 @@ public class Loja {
     }
 
     /**
-     * Método que calcula o stock total da loja
+     * Metodo que calcula o stock total da loja
      * 
      * @return stock total
      */
@@ -459,7 +459,7 @@ public class Loja {
     }
 
     /**
-     * Método que faz o login de um cliente na loja
+     * Metodo que faz o login de um cliente na loja
      * 
      * @param email email do cliente a dar login
      * @return c cliente que vai dar login
@@ -476,7 +476,7 @@ public class Loja {
     }
 
     /**
-     * Meétodo que imprime a lista de Vendas
+     * Metodo que imprime a lista de Vendas
      */
     public void listaVendas() {
         if (vendas.size() != 0)
@@ -491,7 +491,7 @@ public class Loja {
     }
 
     /**
-     * Método que devolve um produto da lista de Produtos
+     * Metodo que devolve um produto da lista de Produtos
      * 
      * @param id identicador do produdo
      * @return produto
