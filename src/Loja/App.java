@@ -54,14 +54,13 @@ public class App {
                             case 1:// Realizar o login/Criar conta
                                 System.out.println("Cliente ja tem registo??[S/N]: ");
                                 System.out.print(">");
-                                Scanner std = new Scanner(System.in);
-                                String registado = std.nextLine();
+                                String registado = input.nextLine();
                                 registado = registado.trim().toLowerCase();
                                 if (registado.equals("s")) {
-                                    Scanner sc = new Scanner(System.in);
+                                    //Scanner sc = new Scanner(System.in);
                                     while (true) {
                                         System.out.print("Introduza o email: ");
-                                        String email = sc.nextLine();
+                                        String email = input.nextLine();
                                         cliente = supermercado.efetuarLogin(email);
                                         if (cliente != null) {
                                             System.out.println(GREEN + "Login com sucesso!" + RESET);
@@ -70,24 +69,21 @@ public class App {
                                             System.out.println(RED + "E-mail incorreto!" + RESET);
                                     }
                                 } else if (registado.equals("n")) {
-                                    Scanner newclient = new Scanner(System.in);
                                     System.out.print("Nome: ");
                                     String nome;
                                     while (true){
-                                        nome = newclient.nextLine();
+                                        nome = input.nextLine();
                                         if(nome.length()<1){
                                             System.out.print("Digite um nome valido: ");
-                                            continue;
                                         }
                                         else break;
                                     }
                                     System.out.print("Morada: ");
                                     String morada;
                                     while (true){
-                                        morada = newclient.nextLine();
+                                        morada = input.nextLine();
                                         if(morada.length()<1){
                                             System.out.print("Digite um nome valido: ");
-                                            continue;
                                         }
                                         else break;
                                     }
@@ -95,7 +91,7 @@ public class App {
                                     int telefone;
                                     while (true)
                                         try {
-                                            telefone = Integer.parseInt(newclient.nextLine());
+                                            telefone = Integer.parseInt(input.nextLine());
                                             break;
                                         } catch (NumberFormatException nfe) {
                                             System.out.print(RED + "Telefone Invalido\n" + RESET + "Tenta novamente: ");
@@ -103,14 +99,15 @@ public class App {
                                     System.out.print("Email: ");
                                     String email = "";
                                     while (!email.contains("@")) {
-                                        email = newclient.nextLine();
-                                        if (!email.contains("@") && email.length()<4)
+                                        email = input.nextLine();
+                                        if (!email.contains("@") && email.length()<4) {
                                             System.out.println(RED + "Email Invalido!\n" + RESET + "Tente novamente:");
+                                        }
                                     }
                                     String dat;
                                     System.out.print("Data de Nascimento[DD/MM/AAAA]: ");
                                     while (true) {
-                                        dat = newclient.nextLine();
+                                        dat = input.nextLine();
                                         try {
                                             LocalDate data = LocalDate.parse(dat, dateTimeFormatter);
                                             Cliente c = new Cliente(nome, morada, telefone, email, data, false);
@@ -139,7 +136,6 @@ public class App {
                                 if (supermercado.stock() == 0)
                                     System.out.println(RED + "Não existem produtos com stock na loja!" + RESET);
                                 else {
-                                    Scanner sc2 = new Scanner(System.in);
                                     Venda vend = new Venda(cliente);
                                     System.out
                                             .println("Escolha a referência de um produto para adicionar à sua compra");
@@ -148,25 +144,27 @@ public class App {
                                         if (supermercado.stock() == 0)
                                             break;
                                         System.out.print("Referência > ");
-                                        String referencia = sc2.nextLine();
+                                        String referencia = input.nextLine();
                                         Produto p = supermercado.find(referencia);
                                         if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
-                                            Scanner sc3 = new Scanner(System.in);
-                                            while (true) {
-                                                System.out.print("Quantidade: ");
-                                                int quantidade = sc3.nextInt();
-                                                if (quantidade > 0 && quantidade <= p.getStock()) {
-                                                    Item i = new Item(p, quantidade);
-                                                    vend.adicionaItem(i);
-                                                    break;
-                                                } else
-                                                    System.out.println(RED + "Quantidade invalida" + RESET);
+                                            System.out.print("Quantidade: ");
+                                            while (true)
+                                                try{
+                                                    int quantidade = Integer.parseInt(input.nextLine());
+                                                    if (quantidade > 0 && quantidade <= p.getStock()) {
+                                                        Item i = new Item(p, quantidade);
+                                                        vend.adicionaItem(i);
+                                                        break;
+                                                    } else
+                                                        System.out.println(RED + "Quantidade invalida" + RESET);
+                                                }catch (NumberFormatException nfe) {
+                                                System.out.print(RED + "Quantidade invalida\n" + RESET + "Tenta novamente: ");
                                             }
                                             if (supermercado.stock() == 0)
                                                 break;
                                             else {
                                                 System.out.print("Quer adicionar mais produtos? [S/*] > ");
-                                                String s = sc2.nextLine();
+                                                String s = input.nextLine();
                                                 if (!(s.equals("s") || s.equals("S"))) {
                                                     break;
                                                 }
@@ -221,19 +219,18 @@ public class App {
                                 break;
                             case 4:
                                 int dias ;
-                                Scanner scan = new Scanner(System.in);
                                 System.out.println("Insira a quantidade de dias que quer avançar: ");
-                                while (true)
+                                while (true) {
                                     try {
-                                        dias = Integer.parseInt(scan.nextLine());
-                                        if(dias < 0){
+                                        dias = Integer.parseInt(input.nextLine());
+                                        if (dias < 0) {
                                             System.out.println("Indique uma quantidade valida: ");
-                                            continue;
                                         }
-                                        break;
+                                        else break;
                                     } catch (NumberFormatException nfe) {
                                         System.out.print("Tenta novamente: ");
                                     }
+                                }
                                     dataAtual = dataAtual.plusDays(dias);
                                     supermercado.atualizaPromocoes(dataAtual);
                                 break;

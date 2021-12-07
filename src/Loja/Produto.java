@@ -37,23 +37,13 @@ public abstract class Produto implements Serializable {
         stock -= n;
     }
 
-
-    /**
-     * Metodo que adiciona stock ao produto
-     * 
-     * @param n quantidade de produtos que se vai adicionar ao stock
-     */
-    public void adicionastock(int n) {
-        stock += n;
-    }
-
     /**
      * ToString Method
      * 
      * @return String formatada com os aributos do Produto
      */
     public String toString() {
-        return "nome: " + nome + " preço: " + preco + " stock: " + stock;
+        return "nome: " + nome + " preco: " + preco + " stock: " + stock;
     }
 
     /**
@@ -150,7 +140,7 @@ class Alimentar extends Produto {
      */
     @Override
     public String toString() {
-        return "Nome: " + getNome() + " preço: " + getPreco() + " stock: " + getStock() + " calorias: " + calorias
+        return "Nome: " + getNome() + " preco: " + getPreco() + " stock: " + getStock() + " calorias: " + calorias
                 + " % de Gordura: " + pGordura;
     }
 }
@@ -182,7 +172,7 @@ class Limpeza extends Produto {
      */
     @Override
     public String toString() {
-        return "Nome: " + getNome() + " preço: " + getPreco() + " stock: " + getStock() + " toxidade: " + toxidade;
+        return "Nome: " + getNome() + " preco: " + getPreco() + " stock: " + getStock() + " toxidade: " + toxidade;
     }
 }
 
@@ -235,7 +225,7 @@ class Mobiliario extends Produto {
      */
     @Override
     public String toString() {
-        return "Nome: " + getNome() + " preço: " + getPreco() + " stock: " + getStock() + " peso: " + peso
+        return "Nome: " + getNome() + " preco: " + getPreco() + " stock: " + getStock() + " peso: " + peso
                 + " Dimensoes: " + dimensaoFormatada();
     }
 

@@ -73,6 +73,11 @@ public class Venda implements Serializable {
         return total;
     }
 
+    /**
+     * calcula o preco total do transporte
+     * 
+     * @return preco total do transporte
+     */
     public int precoTransporte() {
         int preco = 0;
         if (consumidor.getFrequente()){

@@ -166,12 +166,10 @@ public class Loja {
                     try {
                         telefone = Integer.parseInt(string[2]);
                         LocalDate data = LocalDate.parse(string[4], dateTimeFormatter);
-                        boolean frequente = false;
+                        boolean frequente  = false;
                         if (string[5].equals("true")) {
                             frequente = true;
-                        } else if (string[5].equals("false")) {
-
-                        } else {
+                        } else if (!string[5].equals("false")) {
                             System.out.printf(
                                     "Erro no Cliente ser frequente ou nao na linha %d, verifique se tem true ou false no ultimo parametro!\n",linha);
                             System.exit(1);
@@ -253,7 +251,7 @@ public class Loja {
                         String[] s = string[1].split("");
                         if ((dataInicio.isBefore(dataAtual) || dataInicio.isEqual(dataAtual)) && (dataFim.isAfter(dataAtual) || dataFim.isEqual(dataAtual))) {
                             if (string[0].equals("%") && (s[0].equals("m") || s[0].equals("a") || s[0].equals("l"))) {
-                                Promocao pm = new PagaMenos(dataInicio, dataFim, string[1]);
+                                PagaMenos pm = new PagaMenos(dataInicio, dataFim, string[1]);
                                 promocoes.add(pm);
                                 for (Produto produto : produtos) {
                                     if (string[1].equals(produto.getIdentificador())) {
@@ -268,11 +266,11 @@ public class Loja {
 
                             } else if (string[0].equals("-")
                                     && (s[0].equals("m") || s[0].equals("a") || s[0].equals("l"))) {
-                                Promocao pm = new Paga3Leva4(dataInicio, dataFim, string[1]);
-                                promocoes.add(pm);
+                                Paga3Leva4 pl = new Paga3Leva4(dataInicio, dataFim, string[1]);
+                                promocoes.add(pl);
                                 for (Produto produto : produtos) {
                                     if (string[1].equals(produto.getIdentificador())) {
-                                        produto.setPromocao(pm);
+                                        produto.setPromocao(pl);
                                         id = true;
                                     }
                                 }
