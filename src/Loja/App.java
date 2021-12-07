@@ -219,12 +219,12 @@ public class App {
                                 break;
                             case 4:
                                 int dias ;
-                                System.out.println("Insira a quantidade de dias que quer avançar: ");
+                                System.out.print("Insira a quantidade de dias que quer avançar: ");
                                 while (true) {
                                     try {
                                         dias = Integer.parseInt(input.nextLine());
                                         if (dias < 0) {
-                                            System.out.println("Indique uma quantidade valida: ");
+                                            System.out.print("Indique uma quantidade valida: ");
                                         }
                                         else break;
                                     } catch (NumberFormatException nfe) {

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Classe auxiliar que contem um produto e a quantidade desse protudo
  */
 public class Item implements Serializable {
-    private final Produto p;
+    private Produto p;
     private int quantidade;
 
     /**

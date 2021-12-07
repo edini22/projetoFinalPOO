@@ -249,42 +249,33 @@ public class Loja {
                         string[1] = string[1].toLowerCase();
                         string[1] = string[1].replaceAll("\\s+", "");
                         String[] s = string[1].split("");
-                        if ((dataInicio.isBefore(dataAtual) || dataInicio.isEqual(dataAtual)) && (dataFim.isAfter(dataAtual) || dataFim.isEqual(dataAtual))) {
+                        Produto p = null;
+                        for (Produto produto : produtos)
+                            if (string[1].equals(produto.getIdentificador())) {
+                                id = true;
+                                p = produto;
+                                break;
+                            }
+                        if (!id) {
+                            System.out.printf("Identificador de Produto nas Promocoes incorreto na linha %d!\n",linha);
+                            System.exit(2);
+                        }
                             if (string[0].equals("%") && (s[0].equals("m") || s[0].equals("a") || s[0].equals("l"))) {
-                                PagaMenos pm = new PagaMenos(dataInicio, dataFim, string[1]);
-                                promocoes.add(pm);
-                                for (Produto produto : produtos) {
-                                    if (string[1].equals(produto.getIdentificador())) {
-                                        produto.setPromocao(pm);
-                                        id = true;
-                                    }
-                                }
-                                if (!id) {
-                                    System.out.printf("Identificador de Produto nas Promocoes incorreto na linha %d!\n",linha);
-                                    System.exit(2);
-                                }
-
+                                PagaMenos pagaM = new PagaMenos(dataInicio, dataFim, string[1]);
+                                if ((dataInicio.isBefore(dataAtual) || dataInicio.isEqual(dataAtual)) && (dataFim.isAfter(dataAtual) || dataFim.isEqual(dataAtual)))
+                                    p.setPromocao(pagaM);
+                                promocoes.add(pagaM);
                             } else if (string[0].equals("-")
                                     && (s[0].equals("m") || s[0].equals("a") || s[0].equals("l"))) {
-                                Paga3Leva4 pl = new Paga3Leva4(dataInicio, dataFim, string[1]);
-                                promocoes.add(pl);
-                                for (Produto produto : produtos) {
-                                    if (string[1].equals(produto.getIdentificador())) {
-                                        produto.setPromocao(pl);
-                                        id = true;
-                                    }
-                                }
-                                if (!id) {
-                                    System.out.printf("Identificador de Produto nas Promocoes incorreto na linha %d!\n",linha);
-                                    System.exit(2);
-                                }
+                                Paga3Leva4 pagaL = new Paga3Leva4(dataInicio, dataFim, string[1]);
+                                promocoes.add(pagaL);
+                                if ((dataInicio.isBefore(dataAtual) || dataInicio.isEqual(dataAtual)) && (dataFim.isAfter(dataAtual) || dataFim.isEqual(dataAtual)))
+                                    p.setPromocao(pagaL);
                             } else {
                                 System.out.printf(
                                         "erro no tipo de promocao ou no tipo de produto na linha %d!\n",linha);
                                 System.exit(1);
                             }
-                        }
-
                     } catch (DateTimeParseException e) {
                         System.out.printf("Data Invalido no ficheiro \"Promocoes.txt\" na linha %d\n",linha);
                         System.exit(3);

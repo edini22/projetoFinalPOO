@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * Classe que contem os atributos de uma Promoção
+ * Classe que contem os atributos de uma Promocao
  */
 public abstract class Promocao implements Serializable {
     private LocalDate dataInicio;
