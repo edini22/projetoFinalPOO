@@ -1,12 +1,13 @@
 package Loja;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  * Classe auxiliar que contem um produto e a quantidade desse protudo
  */
 public class Item implements Serializable {
-    private Produto p;
+    private final Produto p;
     private int quantidade;
 
     /**
@@ -44,7 +45,8 @@ public class Item implements Serializable {
      * @return String formatada com os atributos de Item
      */
     public String fatura() {
-        return p.getIdentificador() + "  " + p.getNome() + " " + quantidade + " " + conta() + "€";
+        DecimalFormat df = new DecimalFormat("#,###.00");
+        return p.getIdentificador() + "  " + p.getNome() + " " + quantidade + " " + df.format(conta()) + "€";
     }
 
     /**
@@ -66,11 +68,10 @@ public class Item implements Serializable {
         else {
             double pDesconto;
             if ((pDesconto = p.getPromocao().percentagemDesconto(quantidade)) != 0) {
-                return (p.getPreco() * quantidade) * (1 - pDesconto);
+                return (p.getPreco() * (quantidade-1)) * (1 - pDesconto) + p.getPreco();
             } else {
                 return p.getPreco() * (quantidade - p.getPromocao().nProdutosGratis(quantidade));
             }
         }
     }
-
 }

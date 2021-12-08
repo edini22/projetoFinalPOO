@@ -6,9 +6,9 @@ import java.io.*;
  * Classe que contem os atributos de um produto
  */
 public abstract class Produto implements Serializable {
-    private String identificador;
-    private String nome;
-    private double preco;
+    private final String identificador;
+    private final String nome;
+    private final double preco;
     private int stock;
     private Promocao promocao;
 
@@ -43,7 +43,7 @@ public abstract class Produto implements Serializable {
      * @return String formatada com os aributos do Produto
      */
     public String toString() {
-        return "nome: " + nome + " preco: " + preco + " stock: " + stock;
+        return "nome: " + nome + " preco: " + preco + "€" + " stock: " + stock;
     }
 
     /**
@@ -114,8 +114,8 @@ public abstract class Produto implements Serializable {
  * Classe descendente de Produto que define os produtos alimentares
  */
 class Alimentar extends Produto {
-    private int calorias;
-    private int pGordura;
+    private final int calorias;
+    private final int pGordura;
 
     /**
      * Construtor
@@ -140,7 +140,7 @@ class Alimentar extends Produto {
      */
     @Override
     public String toString() {
-        return "Nome: " + getNome() + " preco: " + getPreco() + " stock: " + getStock() + " calorias: " + calorias
+        return "Nome: " + getNome() + " preco: " + getPreco() + "€" + " stock: " + getStock() + " calorias: " + calorias
                 + " % de Gordura: " + pGordura;
     }
 }
@@ -149,7 +149,7 @@ class Alimentar extends Produto {
  * Classe descendente de Produto que define os produtos de limpeza
  */
 class Limpeza extends Produto {
-    private int toxidade;
+    private final int toxidade;
 
     /**
      * Construtor
@@ -172,7 +172,7 @@ class Limpeza extends Produto {
      */
     @Override
     public String toString() {
-        return "Nome: " + getNome() + " preco: " + getPreco() + " stock: " + getStock() + " toxidade: " + toxidade;
+        return "Nome: " + getNome() + " preco: " + getPreco() + "€" + " stock: " + getStock() + " toxidade: " + toxidade;
     }
 }
 
@@ -180,8 +180,8 @@ class Limpeza extends Produto {
  * Classe descendente de Produto que define os produtos de mobiliario
  */
 class Mobiliario extends Produto {
-    private double peso;
-    private int[] dimensao;
+    private final double peso;
+    private final int[] dimensao;
 
     /**
      * Construtor
@@ -195,7 +195,6 @@ class Mobiliario extends Produto {
      */
     public Mobiliario(String identificador, String nome, double preco, int stock, double peso, int[] dimensao) {
         super(identificador, nome, preco, stock);
-        this.dimensao = new int[3];
         this.peso = peso;
         this.dimensao = dimensao;
     }
@@ -225,8 +224,7 @@ class Mobiliario extends Produto {
      */
     @Override
     public String toString() {
-        return "Nome: " + getNome() + " preco: " + getPreco() + " stock: " + getStock() + " peso: " + peso
+        return "Nome: " + getNome() + " preco: " + getPreco() + "€" + " stock: " + getStock() + " peso: " + peso
                 + " Dimensoes: " + dimensaoFormatada();
     }
-
 }

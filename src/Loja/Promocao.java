@@ -7,9 +7,9 @@ import java.time.LocalDate;
  * Classe que contem os atributos de uma Promocao
  */
 public abstract class Promocao implements Serializable {
-    private LocalDate dataInicio;
-    private LocalDate dataFim;
-    private String id;
+    private final LocalDate dataInicio;
+    private final LocalDate dataFim;
+    private final String id;
 
     /**
      * Construtor
@@ -142,5 +142,4 @@ class Paga3Leva4 extends Promocao {
     public String tipoPromocao(){
         return "Pague 3 Leve 4!";
     }
-
 }

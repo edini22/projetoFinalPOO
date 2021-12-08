@@ -7,9 +7,10 @@ import java.util.*;
  * Classe que contem os atributos de uma Venda
  */
 public class Venda implements Serializable {
-    private Cliente consumidor;
-    private List<Item> items;
+    private final Cliente consumidor;
+    private final List<Item> items;
     private int transporteMobilia;
+
 
     /**
      * Construtor
@@ -90,5 +91,4 @@ public class Venda implements Serializable {
             preco += (transporteMobilia * 10);
         return preco;
     }
-
 }

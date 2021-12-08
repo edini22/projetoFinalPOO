@@ -57,7 +57,6 @@ public class App {
                                 String registado = input.nextLine();
                                 registado = registado.trim().toLowerCase();
                                 if (registado.equals("s")) {
-                                    //Scanner sc = new Scanner(System.in);
                                     while (true) {
                                         System.out.print("Introduza o email: ");
                                         String email = input.nextLine();
@@ -176,6 +175,7 @@ public class App {
                                     System.out.println(vend);
                                     supermercado.adicionaVenda(vend);
                                     supermercado.writeVendasObj();
+                                    supermercado.writeProdutosObj();
                                     System.out.println(
                                             "O preço a pagar é: " + (vend.total() + vend.precoTransporte()) + " €");
                                 }
@@ -235,7 +235,7 @@ public class App {
                                     supermercado.atualizaPromocoes(dataAtual);
                                 break;
                             case 5:
-                                System.out.println(dataAtual);
+                                System.out.println(dataAtual.format(dateTimeFormatter));
                                 break;
                             case 0:
                                 break;

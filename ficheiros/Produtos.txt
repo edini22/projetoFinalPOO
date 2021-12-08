@@ -2,7 +2,7 @@ a007;Pao;1;30;100;10
 a023;Alface;1.5;10;15;1
 a507;Carne de porco;4;5;242;14
 a371;Dourada;4.5;6;85;9
-a102;Leite;0.6;12;42;1
+a102;Leite;0.65;12;42;1
 l069;Limpa Vidros;3.5;5;20
 l034;Panos Microfibras;5;4;0
 l200;Lava Tudo;1;8;5

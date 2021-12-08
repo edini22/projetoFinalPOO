@@ -2,6 +2,7 @@ package Loja;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Classe que contem os atributos de um Cliente
@@ -13,6 +14,7 @@ public class Cliente implements Serializable {
     private final String email;
     private final LocalDate dataNascimento;
     private boolean frequente;
+
 
     /**
      * Construtor
@@ -58,6 +60,6 @@ public class Cliente implements Serializable {
      */
     public String toString() {
         return "Nome: " + nome + "\nMorada: " + morada + "\nTelefone: " + telefone + "\nEmail: " + email
-                + "\nData de nascimento: " + dataNascimento;
+                + "\nData de nascimento: " + dataNascimento.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
     }
 }

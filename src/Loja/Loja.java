@@ -2,6 +2,7 @@ package Loja;
 
 import java.util.*;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -468,15 +469,16 @@ public class Loja {
      * Metodo que imprime a lista de Vendas
      */
     public void listaVendas() {
+        DecimalFormat df = new DecimalFormat("#,###.00");
         if (vendas.size() != 0)
             for (Venda venda : vendas) {
                 System.out.println(
-                        venda + "Preço produtos: " + venda.total() + "\nPreço transporte: " + venda.precoTransporte()
-                                + "\nPreço total: " + (venda.total() + venda.precoTransporte()) + "€");
+                        venda + "Preço produtos: " + df.format(venda.total()) + "€" + "\nPreço transporte: " + venda.precoTransporte()
+                                + "€" + "\nPreço total: " + df.format(venda.total() + venda.precoTransporte()) + "€");
                 System.out.println("-------------");
             }
         else
-            System.out.println("Nao registo de vendas.");
+            System.out.println("Nao ha registo de vendas.");
     }
 
     /**
@@ -495,5 +497,4 @@ public class Loja {
         }
         return null;
     }
-
 }
