@@ -12,8 +12,7 @@ import java.time.format.ResolverStyle;
  * Classe que devine as listas de Clientes, Produtos, Vendas e Promocoes
  */
 public class Loja {
-    private final String dateFormat = "dd/MM/uuuu";
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat)
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/uuuu")
             .withResolverStyle(ResolverStyle.STRICT);
     private final File fProdutos = new File("./ficheiros\\Produtos.txt");
     private final File fClientes = new File("./ficheiros\\Clientes.txt");
