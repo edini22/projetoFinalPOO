@@ -70,21 +70,21 @@ public class App {
                                 } else if (registado.equals("n")) {
                                     System.out.print("Nome: ");
                                     String nome;
-                                    while (true){
+                                    while (true) {
                                         nome = input.nextLine();
-                                        if(nome.length()<1){
+                                        if (nome.length() < 1) {
                                             System.out.print("Digite um nome valido: ");
-                                        }
-                                        else break;
+                                        } else
+                                            break;
                                     }
                                     System.out.print("Morada: ");
                                     String morada;
-                                    while (true){
+                                    while (true) {
                                         morada = input.nextLine();
-                                        if(morada.length()<1){
+                                        if (morada.length() < 1) {
                                             System.out.print("Digite um nome valido: ");
-                                        }
-                                        else break;
+                                        } else
+                                            break;
                                     }
                                     System.out.print("Telefone: ");
                                     int telefone;
@@ -99,7 +99,7 @@ public class App {
                                     String email = "";
                                     while (!email.contains("@")) {
                                         email = input.nextLine();
-                                        if (!email.contains("@") && email.length()<4) {
+                                        if (!email.contains("@") && email.length() < 4) {
                                             System.out.println(RED + "Email Invalido!\n" + RESET + "Tente novamente:");
                                         }
                                     }
@@ -123,7 +123,7 @@ public class App {
                                 }
                                 break;
                             case 2: // Realizar uma compra
-                                if(LocalDate.now().isAfter(dataAtual)) {
+                                if (LocalDate.now().isAfter(dataAtual)) {
                                     dataAtual = LocalDate.now();
                                     supermercado.atualizaPromocoes(dataAtual);
                                 }
@@ -148,7 +148,7 @@ public class App {
                                         if (p != null && p.getIdentificador().equals(referencia) && p.getStock() != 0) {
                                             System.out.print("Quantidade: ");
                                             while (true)
-                                                try{
+                                                try {
                                                     int quantidade = Integer.parseInt(input.nextLine());
                                                     if (quantidade > 0 && quantidade <= p.getStock()) {
                                                         Item i = new Item(p, quantidade);
@@ -156,9 +156,10 @@ public class App {
                                                         break;
                                                     } else
                                                         System.out.println(RED + "Quantidade invalida" + RESET);
-                                                }catch (NumberFormatException nfe) {
-                                                System.out.print(RED + "Quantidade invalida\n" + RESET + "Tenta novamente: ");
-                                            }
+                                                } catch (NumberFormatException nfe) {
+                                                    System.out.print(RED + "Quantidade invalida\n" + RESET
+                                                            + "Tenta novamente: ");
+                                                }
                                             if (supermercado.stock() == 0)
                                                 break;
                                             else {
@@ -211,28 +212,28 @@ public class App {
                                 supermercado.listaClientes();
                                 break;
                             case 3:
-                                if(LocalDate.now().isAfter(dataAtual)) {
+                                if (LocalDate.now().isAfter(dataAtual)) {
                                     dataAtual = LocalDate.now();
                                     supermercado.atualizaPromocoes(dataAtual);
                                 }
                                 supermercado.listarProdutos();
                                 break;
                             case 4:
-                                int dias ;
+                                int dias;
                                 System.out.print("Insira a quantidade de dias que quer avançar: ");
                                 while (true) {
                                     try {
                                         dias = Integer.parseInt(input.nextLine());
                                         if (dias < 0) {
                                             System.out.print("Indique uma quantidade valida: ");
-                                        }
-                                        else break;
+                                        } else
+                                            break;
                                     } catch (NumberFormatException nfe) {
                                         System.out.print("Tenta novamente: ");
                                     }
                                 }
-                                    dataAtual = dataAtual.plusDays(dias);
-                                    supermercado.atualizaPromocoes(dataAtual);
+                                dataAtual = dataAtual.plusDays(dias);
+                                supermercado.atualizaPromocoes(dataAtual);
                                 break;
                             case 5:
                                 System.out.println(dataAtual.format(dateTimeFormatter));
